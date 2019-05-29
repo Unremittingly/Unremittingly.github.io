@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>vue源码探析之-computed计算属性 | 西南凯亚UX技术团队</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当 number 变量被修改导致更新视图的时候，methodFullName 每次都会执行,而 computedFullName 只会在页面初始化的时候执行一次，Vue 推荐开发者将 method 和 compute 属性区分开来，能够有效的提升性能，避免执行一些不必要的代码. 在initState中，vue会判断用户是否定义了computed如果定义了，那么执行initComputed方法。传入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue源码探析之-computed计算属性">
+<meta property="og:url" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/index.html">
+<meta property="og:site_name" content="西南凯亚UX技术团队">
+<meta property="og:description" content="当 number 变量被修改导致更新视图的时候，methodFullName 每次都会执行,而 computedFullName 只会在页面初始化的时候执行一次，Vue 推荐开发者将 method 和 compute 属性区分开来，能够有效的提升性能，避免执行一些不必要的代码. 在initState中，vue会判断用户是否定义了computed如果定义了，那么执行initComputed方法。传入">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/ED8D1AB5-E70B-4AE6-93D2-78E474E58070.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/76AE2FDD-0CEA-4B2F-8BB7-EDAE45FED586.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/43B59F15-694E-4117-99C0-B004D7FFEA63.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/AAA18A26-3DED-4ED2-8028-5411FAD6D6D9.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/05641DBB-6CCB-450B-A087-C7833A3179BC.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/4AD220C2-FD23-4A14-BA40-3A4AE12F4FAE.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/E715519B-355E-4DD2-9EB0-FC86F72C14E3.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/3DD3BE35-DB55-4430-AE06-7A3A7A122D38.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/624BDFDE-57B2-43A5-AC75-DFA0F469DBC6.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/AB288B67-5E30-4A70-8D21-6C9FC5FFA8F0.png">
+<meta property="og:image" content="evernotecid://6D469DDB-B9F4-40F8-AE5B-270352FB2418/appyinxiangcom/16286025/ENResource/p637">
+<meta property="og:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/E6A88A8E-72E1-4D2F-99AF-EEEE07611273.png">
+<meta property="og:updated_time" content="2019-05-15T02:28:02.475Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue源码探析之-computed计算属性">
+<meta name="twitter:description" content="当 number 变量被修改导致更新视图的时候，methodFullName 每次都会执行,而 computedFullName 只会在页面初始化的时候执行一次，Vue 推荐开发者将 method 和 compute 属性区分开来，能够有效的提升性能，避免执行一些不必要的代码. 在initState中，vue会判断用户是否定义了computed如果定义了，那么执行initComputed方法。传入">
+<meta name="twitter:image" content="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/ED8D1AB5-E70B-4AE6-93D2-78E474E58070.png">
+  
+    <link rel="alternate" href="/atom.xml" title="西南凯亚UX技术团队" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">西南凯亚UX技术团队</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://localhost:4000"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-vue源码探析之-computed计算属性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/14/vue源码探析之-computed计算属性/" class="article-date">
+  <time datetime="2019-05-14T08:18:40.000Z" itemprop="datePublished">2019-05-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue源码探析之-computed计算属性
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2019/05/14/vue源码探析之-computed计算属性/ED8D1AB5-E70B-4AE6-93D2-78E474E58070.png" alt="180c218efc03be4753bd6b00032edd45"><br>当 number 变量被修改导致更新视图的时候，methodFullName 每次都会执行,而 computedFullName 只会在页面初始化的时候执行一次，Vue 推荐开发者将 method 和 compute 属性区分开来，能够有效的提升性能，避免执行一些不必要的代码.</p>
+<p>在initState中，vue会判断用户是否定义了computed<br><img src="/2019/05/14/vue源码探析之-computed计算属性/76AE2FDD-0CEA-4B2F-8BB7-EDAE45FED586.png" alt="6fee3389693888bc3825717b242f7fa6"><br>如果定义了，那么执行initComputed方法。<br><img src="/2019/05/14/vue源码探析之-computed计算属性/43B59F15-694E-4117-99C0-B004D7FFEA63.png" alt="c996d740af940adc10aaabf141dc904d"><br>传入的computed是一个对象，里面就是你定义的一些computed方法。遍历computed对象，给每个计算属性实例化一个Watcher,因为传入的computedWatcherOptions传入的lazy为true，所以实例化的 watcher 即为 computed watcher（this._ computedWatchers ）。<br>最后判断在vue的data或者prop上是否定义了跟计算属性的名字相同的属性，如果定义了就警告。<br>如果没有定义就执行defineComputed(vm,key,userDef)方法。<br><img src="/2019/05/14/vue源码探析之-computed计算属性/AAA18A26-3DED-4ED2-8028-5411FAD6D6D9.png" alt="14652163385bb99455d476c96fa16926"><br>这个函数的目的就是给计算属性定义get函数和set函数<br><img src="/2019/05/14/vue源码探析之-computed计算属性/05641DBB-6CCB-450B-A087-C7833A3179BC.png" alt="fa4b88256fa3705eb128816579be2ee7"><br>如果不是服务端渲染的话，那么计算属性的get来自createComputedGetter这个高阶函数返回的函数：computedGetter<br><img src="/2019/05/14/vue源码探析之-computed计算属性/4AD220C2-FD23-4A14-BA40-3A4AE12F4FAE.png" alt="a5ec06835046c1dafbce89c71e91fd8a"></p>
+<p>当执行$mount(‘#app’)进行模板编译，template模板转会换成render函数，此时对模板中的变量进行访问，此时会触发computedFullName的get函数，也就是刚刚高阶函数返回的computedGetter，通过 key 获取到第一步中定义的 computed watcher，随后会判断这个 computed watcher 的 dirty 属性是否为 true，当 dirty 为 true 时， 会执行 <strong>evaluate</strong> 方法, evaluate 内部会执行计算属性的函数,并且将 watcher 的 value 属性等于函数执行后的结果也就是最终计算出来的值。<br>dirty 属性是一个用来检测当前的 computed watcher是否需要重新执行的一个标志,这也是计算属性和普通method的区别，结合上图可以发现，当 dirty 为 false 时，就不会去执行 evaluate 也就不会执行计算属性的函数，可以看到最后直接就返回了 watcher.value 表示这次不会进行计算，会直接使用以前的 value 的值<br>当第一次触发computedGetter 时，dirty 属性的默认值是 true ，那是因为在初始化 computed watcher时候 Vue 将 dirty 属性等于了 lazy 属性，即为 true。</p>
+<h3 id="evaluate（求…的值）方法中的两步"><a href="#evaluate（求…的值）方法中的两步" class="headerlink" title="evaluate（求…的值）方法中的两步"></a>evaluate（求…的值）方法中的两步</h3><p><img src="/2019/05/14/vue源码探析之-computed计算属性/E715519B-355E-4DD2-9EB0-FC86F72C14E3.png" alt="20c47f1bde660e9007b7d0a98c1c9cb0"></p>
+<h4 id="1、get方法"><a href="#1、get方法" class="headerlink" title="1、get方法"></a>1、get方法</h4><p>第一行执行了 get 方法, get 方法是所有 watcher 用来求值的通用方法<br><img src="/2019/05/14/vue源码探析之-computed计算属性/3DD3BE35-DB55-4430-AE06-7A3A7A122D38.png" alt="60680384f1c82fef0aa4870f52359067"><br>get 主要就做了这三步</p>
+<ol>
+<li>将当前这个 watcher 作为栈顶的 watcher 推入栈</li>
+<li>执行getter方法</li>
+<li>将这个 watcher 弹出栈</li>
+</ol>
+<p>我们知道 Vue.js 会维护一个全局的栈用来存放 watcher ，每当触发响应式变量内部的 getter 时，就会收集这个全局的栈的顶部的 watcher（即Dep.target），将这个 watcher 存入响应式变量内部保存的dep中</p>
+<p><strong>第一步</strong>：<strong>通过 pushTarget 将当前的 computed watcher 推入全局的栈中</strong><br>此时Dep.target就指向这个栈顶的 computed watcher<br><img src="/2019/05/14/vue源码探析之-computed计算属性/624BDFDE-57B2-43A5-AC75-DFA0F469DBC6.png" alt="34405d53e3971f3c0e410926fd8b6680"></p>
+<p><strong>第二步</strong>：<strong>执行 getter 方法</strong><br>Getter就是刚刚我们给每个计算属性实例化watcher时传入的Getter, 对于 computed watcher，getter 方法就是计算属性的函数，执行函数将返回的值赋值给 value 属性，而当计算属性的函数执行时，如果内部含有其他的响应式变量，会触发它们内部的 getter ，将第一步放入作为当前栈顶的 computed watcher 存入响应式变量内部的dep对象中</p>
+<p><strong>第三步</strong>: <strong>将这个 computed watcher 弹出全局的栈</strong><br>之所以将这个 computed watcher 推入又弹出，是为了让第二步执行内部的 getter 时，能让计算属性函数内部依赖的响应式变量收集到这个 computed watcher<br>对于计算属性来说，get 方法的作用就是进行求值</p>
+<h4 id="2、将dirty设为false"><a href="#2、将dirty设为false" class="headerlink" title="2、将dirty设为false"></a>2、将dirty设为false</h4><p>执行完 get 方法，即<strong>一旦计算属性执行过一次求值</strong>，就会将 dirty 属性设为 false，如果下次又触发了这个计算属性的 getter 会直接跳过求值阶段</p>
+<h3 id="结合例子"><a href="#结合例子" class="headerlink" title="结合例子"></a>结合例子</h3><p>在例子中，因为视图需要依赖 computedFullName 这个响应式变量，所以会触发它的内部的 getter，同时它又是一个计算属性，即会执行 computedGetter ，此时 dirty 属性为默认值 true，执行 evaluate =&gt; get =&gt; pushTarget<br>在 pushTarget 中，由于是 computed watcher 执行的 get 方法，所以 this 指向这个 computed watcher， 将它推入全局栈中作为 Dep.target，随后执行计算属性的函数<br>可以看到计算属性 computedFullName 的函数依赖了 firstName 和 lastName 这2个响应式变量，Vue在内部通过闭包的形式各自保存了一个 dep 对象，这个 dep 对象会收集当前栈顶的 watcher，即收集 computedFullName 这个计算属性的 computed watcher，所以当计算属性的函数执行完毕后，firstName 和 lastName 内部的 dep 对象中都会保存一个 computed watcher 收集完毕后，将 computed watcher 弹出，让栈恢复到之前的状态。<br><img src="/2019/05/14/vue源码探析之-computed计算属性/AB288B67-5E30-4A70-8D21-6C9FC5FFA8F0.png" alt="e24ba3233fc69a6dbf8f2481f77e5989"></p>
+<p>当我点击“加数字”，this.number自增1，导致视图更新，此时依然会触发computedFullName这个计算属性的访问执行computedGetter，此时的dirty是false,并不会执行watcher.evaluate的重新计算,然后判断当Dep.target 存在，说明在上一步弹出了 computed watcher 后全局的栈中仍有其他的 watcher。比如当视图中依赖了当前的计算属性，那当前栈顶的 watcher 就是 render watcher，此时执行watcher.depend().<br>depend 方法也非常简短，它会遍历当前 computed watcher 的deps属性，依次执行 dep 的 depend 方法</p>
+<p><strong>这时候执行 dep.depend 时会再次给这2个响应式变量收集栈顶的 watcher，即 render watcher，最终这2个变量内部的 dep 都保存了2个变量，一个 computed watcher，一个 render watcher</strong><br><img src="evernotecid://6D469DDB-B9F4-40F8-AE5B-270352FB2418/appyinxiangcom/16286025/ENResource/p637" alt="1303f5cbd03ea1d03bfc4c1b175e38c7.png"></p>
+<h4 id="内部依赖项被修改，重新执行计算"><a href="#内部依赖项被修改，重新执行计算" class="headerlink" title="内部依赖项被修改，重新执行计算"></a>内部依赖项被修改，重新执行计算</h4><p>当计算属性的依赖项，即 firstName 和 lastName 被修改时，会触发内部的 setter，Vue 会遍历响应式变量内部的 dep 保存的 watcher，最终会执行每个 watcher 的 update 方法，而变量内部dep保存的watcher是 computed watcher,<br><img src="/2019/05/14/vue源码探析之-computed计算属性/E6A88A8E-72E1-4D2F-99AF-EEEE07611273.png" alt="3366ce79df96c62cc7bf78d5e4c4b229"><br>可以看到 update 方法有3种情况:</p>
+<ol>
+<li>lazy：只存在于 computed watcher</li>
+<li>sync：只存在于 user watcher，当 user watcher 设置了 sync 会同步调用 watcher 不会延迟到 nextTick 后，基本不会用</li>
+<li>默认情况：一般的 user watcher 和 render watcher 都会执行 queueWatcher，将这些 watcher 放到 nextTick 后执行</li>
+</ol>
+<p>通过前面的 evaluate 和 depend 方法，firstName 和 lastName 内部的 dep 中都会保存2个 watcher，一个 computed watcher，一个 render watcher，当 lastName 被修改时，会触发内部的 setter，遍历 dep 保存的所有 watchers，这里会先执行 computed watcher 的 update 方法<br>同时前面说到在 computed watcher 求值结束后，会将 dirty 置为 false（执行evaluate），之后再获取计算属性的值时都会跳过 evaluate 方法直接返回以前的 value，而执行 computed watcher 的 update 方法会将 dirty 再次变成 true，整个computed watcher 只做这一件事，即取消 computed watcher 使用以前的缓存的标志。</p>
+<blockquote>
+<p>这个操作是同步执行的，也就是说即使 render watcher 或 user watcher 在 watchers 数组中比 computed watcher 靠前，但是由于前2个 watcher 一般是异步执行的，所以最终执行的时候 computed watcher 会优先执行</p>
+</blockquote>
+<p>而真正的求值操作是在 render watcher 中进行的，当遍历到第二个 render watcher 时，由于视图依赖了 fullName，会触发计算属性的 getter，再次执行之前的 computedGetter，此时由于上一步将 dirty 变成 true了，所以就会进入 evalutate 重新计算，此时 computedFullName 就拿到了最新的值”ggxlove”了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/" data-id="cjw8jcfcw0004spls18t2pq7t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          vue源码探析之-从nextTick谈JS事件队列
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/13/Hexo图片部署和展示问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo图片部署和展示问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/29/5月24号UX分享-前端篇/">UX分享之-组件设计原则</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/">vue源码探析之-从nextTick谈JS事件队列</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/14/vue源码探析之-computed计算属性/">vue源码探析之-computed计算属性</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/13/Hexo图片部署和展示问题/">Hexo图片部署和展示问题</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/">Vue源码探析之-Vue如何做到依赖收集与派发更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Object<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

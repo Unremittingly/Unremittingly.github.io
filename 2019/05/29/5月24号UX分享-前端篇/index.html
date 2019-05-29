@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>UX分享之-组件设计原则 | 西南凯亚UX技术团队</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="组件设计原则1、就近管理 单文件开发 依赖的静态资源放在同级目录 相关联组件也放在同级目录  2、高复用性 最重要的一点，是需要转变一个观念。我们应该以组件为单位，而不是以页面为单位进行开发。不同页面之间可以由同一个业务组件组成   页面级别的复用（基础组件）  项目级别的复用（私有组件库） 公司级别的复用（开源组件库）  3、分层设计以一个基础的第三方插件比如（better-scroll）为第一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UX分享之-组件设计原则">
+<meta property="og:url" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/index.html">
+<meta property="og:site_name" content="西南凯亚UX技术团队">
+<meta property="og:description" content="组件设计原则1、就近管理 单文件开发 依赖的静态资源放在同级目录 相关联组件也放在同级目录  2、高复用性 最重要的一点，是需要转变一个观念。我们应该以组件为单位，而不是以页面为单位进行开发。不同页面之间可以由同一个业务组件组成   页面级别的复用（基础组件）  项目级别的复用（私有组件库） 公司级别的复用（开源组件库）  3、分层设计以一个基础的第三方插件比如（better-scroll）为第一">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/6CFBB235-A69A-45A7-AEB4-F3001F9BC48C.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/BA9215FA-69F1-457B-8BB8-DE70BAEF08DF.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/44E094F7-7BF2-472C-95B4-B7F60B880FE0.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/AEF51262-2433-4949-957B-FDF418CD34EE.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/182926D9-AB79-4B8A-A0AA-0FB9E66D329A.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/01A501A9-F305-4DF0-B8AD-5A577F03BEEB.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/09417413-C284-4326-B2A9-9DA3B63D1D4B.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/79F42553-36A0-4DC4-82DC-E8FC5F96EED1.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/17BFD262-1685-43E1-A8E6-F4E4E8AE41D2.png">
+<meta property="og:updated_time" content="2019-05-29T01:10:50.408Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UX分享之-组件设计原则">
+<meta name="twitter:description" content="组件设计原则1、就近管理 单文件开发 依赖的静态资源放在同级目录 相关联组件也放在同级目录  2、高复用性 最重要的一点，是需要转变一个观念。我们应该以组件为单位，而不是以页面为单位进行开发。不同页面之间可以由同一个业务组件组成   页面级别的复用（基础组件）  项目级别的复用（私有组件库） 公司级别的复用（开源组件库）  3、分层设计以一个基础的第三方插件比如（better-scroll）为第一">
+<meta name="twitter:image" content="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/6CFBB235-A69A-45A7-AEB4-F3001F9BC48C.png">
+  
+    <link rel="alternate" href="/atom.xml" title="西南凯亚UX技术团队" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">西南凯亚UX技术团队</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://localhost:4000"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-5月24号UX分享-前端篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/29/5月24号UX分享-前端篇/" class="article-date">
+  <time datetime="2019-05-29T00:52:40.000Z" itemprop="datePublished">2019-05-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UX分享之-组件设计原则
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="组件设计原则"><a href="#组件设计原则" class="headerlink" title="组件设计原则"></a>组件设计原则</h2><h4 id="1、就近管理"><a href="#1、就近管理" class="headerlink" title="1、就近管理"></a>1、就近管理</h4><ol>
+<li>单文件开发</li>
+<li>依赖的静态资源放在同级目录</li>
+<li>相关联组件也放在同级目录</li>
+<li><p><img src="/2019/05/29/5月24号UX分享-前端篇/6CFBB235-A69A-45A7-AEB4-F3001F9BC48C.png" alt="7c6ab1b41682fbfcd97cd2185ce7bc05"></p>
+<h4 id="2、高复用性"><a href="#2、高复用性" class="headerlink" title="2、高复用性"></a>2、高复用性</h4><blockquote>
+<p>最重要的一点，是需要转变一个观念。我们应该以组件为单位，而不是以页面为单位进行开发。<br>不同页面之间可以由同一个业务组件组成</p>
+</blockquote>
+</li>
+<li><p>页面级别的复用（基础组件）</p>
+</li>
+<li>项目级别的复用（私有组件库）</li>
+<li>公司级别的复用（开源组件库）</li>
+</ol>
+<h4 id="3、分层设计"><a href="#3、分层设计" class="headerlink" title="3、分层设计"></a>3、分层设计</h4><p>以一个基础的第三方插件比如（better-scroll）为第一层级，逐级实现复杂的组件<br>better-scroll&gt;popup&gt;picker&gt;cascadePicker&gt;城市选择器和时间选择器</p>
+<h4 id="4、灵活扩展"><a href="#4、灵活扩展" class="headerlink" title="4、灵活扩展"></a>4、灵活扩展</h4><p>我们常看到一些优秀的组件库，传入的值既可以是一个 String/Number，也可以是一个函数。<br>比如ElementUI的Table组件，当你想要显示树形数据的时候，必须传入row-key。<br>row-key的作用：行数据的 Key，用来优化 Table 的渲染。类型为 String 时，支持多层访问：user.info.id，但不支持 user.info[0].id，此种情况请使用 Function</p>
+<p><child-component :prop1="var1" :prop2="var2" :prop="var3" ...><br>v-bind={子组件props集合}</child-component></p>
+<p>如果你子组件修改了父组件传入的对象A，父组件的对象A也会发生修改，所以我一般只有子组件不会修改父组件传入的值的情况下，我才会传入对象。父组件把对象传入子组件，是实现双向绑定的hack方式，但不推荐</p>
+<h2 id="开发规范"><a href="#开发规范" class="headerlink" title="开发规范"></a>开发规范</h2><h4 id="目录设计"><a href="#目录设计" class="headerlink" title="目录设计"></a>目录设计</h4><p><img src="/2019/05/29/5月24号UX分享-前端篇/BA9215FA-69F1-457B-8BB8-DE70BAEF08DF.png" alt="c5f316e726acf8dfe0f2d60628242de0"></p>
+<h4 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h4><h5 id="1、HTML部分"><a href="#1、HTML部分" class="headerlink" title="1、HTML部分"></a>1、HTML部分</h5><ul>
+<li>使用.vue单文件开发组件</li>
+<li>template 模板尽量使用语义化标签</li>
+<li>遇到相同的结构尽量考虑抽象出来</li>
+</ul>
+<h5 id="2、css部分"><a href="#2、css部分" class="headerlink" title="2、css部分"></a>2、css部分</h5><ul>
+<li>CSS预处理器(stylus、less、sass)、autoprefixer </li>
+<li>定义全局变量:颜色、字体 </li>
+<li>定义全局的mixin函数</li>
+<li>组件样式使用scope或者BEM规范</li>
+<li>使用eslint</li>
+<li>避免使用魔术字符串和魔术数字、用常量代替(<u>魔术字符串指的是，在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值)</u><h5 id="3、js部分"><a href="#3、js部分" class="headerlink" title="3、js部分"></a>3、js部分</h5></li>
+<li>相同的逻辑可以考虑抽象出来mixin<h2 id="组件通信"><a href="#组件通信" class="headerlink" title="组件通信"></a>组件通信</h2><h5 id="1、组件A-gt-组件B-gt-组件C"><a href="#1、组件A-gt-组件B-gt-组件C" class="headerlink" title="1、组件A-&gt;组件B-&gt;组件C"></a>1、组件A-&gt;组件B-&gt;组件C</h5>A props 到B ,B props到c ,c再emit到b,b emit<br>很显然A-&gt;C，第一种通过props和$emit的方式，使得组件之间的业务逻辑臃肿不堪，B组件在其中仅仅充当的是一个中转站的作用。如使用第二种 Vuex的方式，某些情况下似乎又有点大材小用的意味，（仅仅是想实现组件之间的一个数据传递，并非数据共享的概念）。第三种情况的使用在实际的项目操作中发现，如不能实现很好的事件监听与发布的管理，往往容易导致数据流的混乱，在多人协作的项目中，不利于项目的维护。<br>多级组件嵌套需要传递数据时，通常使用的方法是通过vuex。如果仅仅是传递数据，而不做中间处理，使用 vuex 处理，未免有点杀鸡用牛刀。Vue 2.4 版本提供了另一种方法，使用 v-bind=”$attrs”, 将父组件中不被认为 props特性绑定的属性传入子组件中，通常配合 interitAttrs 选项一起使用。之所以要提到这两个属性，是因为两者的出现使得组件之间跨组件的通信在不依赖 vuex 和eventBut 的情况下变得简洁，业务清晰。</li>
+</ul>
+<p>可以用 $listeners 去整体接收监听的事件，{event1: ƒ, even2: ƒ}以一个对象去接收，此时在父组件中子组件模板上监听的两个事件不但可以被子组件实例属性 $listeners 去整体接收，并且同时可以在子组件进行触发。<br><strong>总结</strong>：<br>1:data 与 props 的数据存放要素<br>2:单个组件 $emit 与 $on 的通信，父子组件 v-on 与 $emit 的通信<br>3:.sync 和 v-model 双向绑定的模式<br>4: $attrs 与 $listeners 深层次数据传递与行为交互的运用模式</p>
+<h5 id="2、vue-observable"><a href="#2、vue-observable" class="headerlink" title="2、vue.observable"></a>2、vue.observable</h5><p>返回的对象可以直接用于渲染函数和计算属性内，并且会在发生改变时触发相应的更新。也可以作为最小化的跨组件状态存储器，具体用法点击<a href="https://cn.vuejs.org/v2/api/#Vue-observable" target="_blank" rel="noopener">查看</a></p>
+<h5 id="3、智能组件原理："><a href="#3、智能组件原理：" class="headerlink" title="3、智能组件原理："></a><strong>3、智能组件原理：</strong></h5><p>智能组件可以称为第三方通用组件，也可以称之为业务型公用组件，与父组件之间的关系是完全解耦的，只能通过 props 进行数据传递，event 进行事件传递，不依赖于任何环境，只需要传递相应的数据和事件，就能得到你想要的操作。</p>
+<p>其中具有代表性的就是函数式组件</p>
+<ol>
+<li>在template标签上标明 functional</li>
+<li>只接受props</li>
+<li>不需要script标签<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- list.vue 函数式组件&gt;</span><br><span class="line">&lt;template functional&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">&lt;p v-for=&quot;item in props.items&quot; @click=&quot;props.itemClick(item)&quot;&gt;</span><br><span class="line">&#123;&#123;item&#125;&#125;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><a href="https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">函数式组件详情见这里</a></p>
+<h5 id="4、木偶组件原理："><a href="#4、木偶组件原理：" class="headerlink" title="4、木偶组件原理："></a><strong>4、木偶组件原理：</strong></h5><p>木偶组件是为了业务页面进行拆分而形成的组件模式。比如一个页面，可以分多个模块，而每一个模块与其余页面并没有公用性，只是纯粹拆分。<br>当一个智能组件是由两个组件组成的一个复合智能组件，而它的子组件与父组件之间就有一个木偶的原理，因为两者是相互的，在开发者调用并需保持它们的关系性、规范性，一旦改变其本身的模式则会无效。<br>demo 组件已经明确的知道是 Hello 组件的子组件，也可以是 demo 组件是 Hello 组件的木偶组件，通过 $parent 就可以随意取到和改动父组件实例的属性（数据）。同样这也并不违反数据的单向流的原则，可以对比一下通过 v-on 和 $emit 或者 v-model，.sync 这几种方法，不但方便很多，还更加快捷，并且明确了组件的位置，就像木偶一样，永远不会变，它的父组件永远只会是同一个。</p>
+<h2 id="模块依赖-vue-create-api"><a href="#模块依赖-vue-create-api" class="headerlink" title="模块依赖 vue-create-api"></a>模块依赖 vue-create-api</h2><ul>
+<li>一个能够让vue组件通过API方式调用的组件</li>
+<li>动态把组件挂载到body下</li>
+<li>支持传入响应式props、events、插槽、单例和多例模式</li>
+<li>在普通js中也能调用</li>
+</ul>
+<h2 id="vue项目最佳实践"><a href="#vue项目最佳实践" class="headerlink" title="vue项目最佳实践"></a>vue项目最佳实践</h2><h4 id="1、以短横线分隔方式命名事件"><a href="#1、以短横线分隔方式命名事件" class="headerlink" title="1、以短横线分隔方式命名事件"></a>1、以短横线分隔方式命名事件</h4><p>触发/监听自定义事件时，应该始终使用短横线分隔<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.$emit(&apos;my-event&apos;)</span><br><span class="line">v-on:my-event</span><br></pre></td></tr></table></figure></p>
+<p>HTML对大小写不敏感，一般情况下，JS的大小写变量放到HTML中，会将大写改成小写，并在前面添加短杠</p>
+<h4 id="2、v-for循环中使用key"><a href="#2、v-for循环中使用key" class="headerlink" title="2、v-for循环中使用key"></a>2、v-for循环中使用key</h4><p>使用v-for更新已渲染的元素列表时,默认采用就地复用策略;列表数据修改的时候,会根据key值去判断某个值是否修改,如果修改,则重新渲染这一项,否则复用之前的元素;同时key值应该是唯一且不变的值</p>
+<h4 id="3、不要在使用v-for的同一元素上使用v-if"><a href="#3、不要在使用v-for的同一元素上使用v-if" class="headerlink" title="3、不要在使用v-for的同一元素上使用v-if"></a>3、不要在使用v-for的同一元素上使用v-if</h4><p>同时使用的情况下，就算是只需要渲染一部分用户，也同样会遍历整个列表。<br><img src="/2019/05/29/5月24号UX分享-前端篇/44E094F7-7BF2-472C-95B4-B7F60B880FE0.png" alt="a820a2adf6d59af9b6009767ff5049b4"><br>通过将其更换为在如下的一个计算属性上遍历：<br><img src="/2019/05/29/5月24号UX分享-前端篇/AEF51262-2433-4949-957B-FDF418CD34EE.png" alt="d3031812492cdb92ef6183df286f2cdd"><br>过滤后的列表只会在 users 数组发生相关变化时才被重新运算，过滤更高效。<br>使用 v-for=”user in activeUsers” 之后，我们在渲染的时候只遍历活跃用户，渲染更高效。<br>解藕渲染层的逻辑，可维护性 (对逻辑的更改和扩展) 更强。</p>
+<h4 id="4、不要在created生命周期和watch中调用同一个方法"><a href="#4、不要在created生命周期和watch中调用同一个方法" class="headerlink" title="4、不要在created生命周期和watch中调用同一个方法"></a>4、不要在created生命周期和watch中调用同一个方法</h4><p>如果我们需要在组件初始化以及侦听属性变化时调用同一个方法，通常的做法像下面这样<br><img src="/2019/05/29/5月24号UX分享-前端篇/182926D9-AB79-4B8A-A0AA-0FB9E66D329A.png" alt="947c3d8e45a54e916268831b14230ee8"><br>这样的话，在组件实例化的时候doSomething会多触发一次。<br>正确的做法应该是把所需要执行的方法放到watch里面，避免在created钩子里写重复代码<br><img src="/2019/05/29/5月24号UX分享-前端篇/01A501A9-F305-4DF0-B8AD-5A577F03BEEB.png" alt="357755326f9e2b90f9781aeda255b691"></p>
+<h2 id="vue应用的性能优化"><a href="#vue应用的性能优化" class="headerlink" title="vue应用的性能优化"></a>vue应用的性能优化</h2><h4 id="如何定位Vue应用性能问题"><a href="#如何定位Vue应用性能问题" class="headerlink" title="如何定位Vue应用性能问题"></a>如何定位Vue应用性能问题</h4><p>Vue 应用的性能问题可以分为两个部分，第一部分是运行时性能问题，第二部分是加载性能问题。<br>和其他 web 应用一样，定位 Vue 应用性能问题最好的工具是 Chrome Devtool，通过 Performance 工具可以用来录制一段时间的 CPU 占用、内存占用、FPS 等运行时性能问题，通过 Network 工具可以用来分析加载性能问题。<br>例如，通过 Performance 工具的 Bottom Up 标签我们可以看出一段时间内耗时最多的操作这对于优化 CPU 占用和 FPS 过低非常有用，可以看出最为耗时的操作发生在哪里，可以知道具体函数的执行时间，定位到瓶颈之后，我们就可以做一些针对性的优化。<br><img src="/2019/05/29/5月24号UX分享-前端篇/09417413-C284-4326-B2A9-9DA3B63D1D4B.png" alt="c82f964722a5ec5887d6d9f0b8f038e9"><br><img src="/2019/05/29/5月24号UX分享-前端篇/79F42553-36A0-4DC4-82DC-E8FC5F96EED1.png" alt="65fef0ceb772b991ad06d2ed04513334"></p>
+<h4 id="vue应用运行时性能优化建议"><a href="#vue应用运行时性能优化建议" class="headerlink" title="vue应用运行时性能优化建议"></a>vue应用运行时性能优化建议</h4><ol>
+<li>引入生产环境的vue文件<br> 开发环境下，Vue 会提供很多警告来帮你对付常见的错误与陷阱。而在生产环境下，这些警告语句没有用，反而会增加应用的体积。有些警告检查还有一些小的运行时开销。<br>当使用 webpack 或 Browserify 类似的构建工具时，Vue 源码会根据 process.env.NODE_ENV 决定是否启用生产环境模式，默认情况为开发环境模式。在 webpack 与 Browserify 中都有方法来覆盖此变量，以启用 Vue 的生产环境模式，同时在构建过程中警告语句也会被压缩工具去除</li>
+<li>使用单文件组件预编译模板<br> 当使用 DOM 内模板或 JavaScript 内的字符串模板时，模板会在运行时被编译为渲染函数。通常情况下这个过程已经足够快了，但对性能敏感的应用还是最好避免这种用法。<br>预编译模板最简单的方式就是使用单文件组件——相关的构建设置会自动把预编译处理好，所以构建好的代码已经包含了编译出来的渲染函数而不是原始的模板字符串。</li>
+</ol>
+<h4 id="vue应用性能加载优化建议"><a href="#vue应用性能加载优化建议" class="headerlink" title="vue应用性能加载优化建议"></a>vue应用性能加载优化建议</h4><ol>
+<li>使用Object.freeze()提升性能<br> Object.freeze() 可以冻结一个对象，防止对象被修改<br>在Vue中，对于data或者Vuex里面使用了freeze冻结了的对象，vue不会做getter或者setter的转换，当你有一个巨大的数组或者对象，并且确信数据不会改变，使用Object.freeze()可以大大提升性能。<br><strong>原理：</strong><br>当你把一个普通的JavaScript对象传给Vue实例的data选项，Vue将遍历此对象所有的属性，并使用 Object.defineProperty把这些属性全部转为 getter/setter，这些 getter/setter 对用户来说是不可见的，但是在内部它们让 Vue 追踪依赖，在属性被访问和修改时通知变化。但 Vue 在遇到像 Object.freeze() 这样被设置为不可配置之后的对象属性时，不会为对象加上 setter getter 等数据劫持的方法。该方法适用于展示类场景</li>
+</ol>
+<p>2.利用服务端渲染（ssr）和预渲染（prerender）提升性能<br><img src="/2019/05/29/5月24号UX分享-前端篇/17BFD262-1685-43E1-A8E6-F4E4E8AE41D2.png" alt="b0c7f195065d7498d3eba24f32892999"></p>
+<p>3.通过组件懒加载优化超长应用内容加载性能<br>Vue-lazy-component常应用于含大量图片的瀑布流布局、无限列表等</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/" data-id="cjw8jcfct0002splsfubrvysn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">vue源码探析之-从nextTick谈JS事件队列</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/29/5月24号UX分享-前端篇/">UX分享之-组件设计原则</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/">vue源码探析之-从nextTick谈JS事件队列</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/14/vue源码探析之-computed计算属性/">vue源码探析之-computed计算属性</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/13/Hexo图片部署和展示问题/">Hexo图片部署和展示问题</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/">Vue源码探析之-Vue如何做到依赖收集与派发更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Object<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

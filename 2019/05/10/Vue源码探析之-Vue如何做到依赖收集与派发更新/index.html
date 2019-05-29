@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Vue源码探析之-Vue如何做到依赖收集与派发更新 | 西南凯亚UX技术团队</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1： vue的Object变化侦测我们以一个data数据变化为例：123456let data = &amp;#123;price:&amp;#123;data:5&amp;#125;, quality:10&amp;#125;let total = 0let getTotal = ()=&amp;gt;&amp;#123;     total = data.price.data* data.quality    return total&amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码探析之-Vue如何做到依赖收集与派发更新">
+<meta property="og:url" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/index.html">
+<meta property="og:site_name" content="西南凯亚UX技术团队">
+<meta property="og:description" content="1： vue的Object变化侦测我们以一个data数据变化为例：123456let data = &amp;#123;price:&amp;#123;data:5&amp;#125;, quality:10&amp;#125;let total = 0let getTotal = ()=&amp;gt;&amp;#123;     total = data.price.data* data.quality    return total&amp;#1">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img1.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/B200C348-D5B1-4BB1-8E35-54D7D218B966.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/4E3A2ED5-6A1E-4030-BB35-245D924B1818.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/6D2EF0AE-59C4-44CF-AFC5-BAE8D622D87A.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/C9D2E984-2BEE-4AC1-8363-71622CFC4106.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/39A93AE6-3EB5-4B3B-8CBB-586C2AF49985.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/186D3EB1-F894-4E57-B485-57B51610364D.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/865A3B28-5E0B-44BA-B16E-1D46911823D2.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/0177D2BF-BC4A-4477-81EC-EBA65E0B71CA.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/CC95CCC5-E254-439D-85B2-6D4B71044731.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img2.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/372F6A55-17AF-4405-A083-90C57ED949F9.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/5221A3D0-CF83-44B6-BF6C-3B58F856FE74.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/C9607BD4-40E4-409F-A373-F2CEDF0DE75A.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/23736D56-12E0-4DB2-A139-BA1C7EC766B6.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/F06AAC8A-04B3-4F3C-864C-0A9A194150C8.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/01F3B992-75C0-4872-806A-3B0B26A5B588.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/A0EBB523-100E-4993-8D1E-22BC5CABDDE8.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/59E391B5-821F-494F-987B-C26451144F75.png">
+<meta property="og:updated_time" content="2019-05-15T02:17:04.357Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码探析之-Vue如何做到依赖收集与派发更新">
+<meta name="twitter:description" content="1： vue的Object变化侦测我们以一个data数据变化为例：123456let data = &amp;#123;price:&amp;#123;data:5&amp;#125;, quality:10&amp;#125;let total = 0let getTotal = ()=&amp;gt;&amp;#123;     total = data.price.data* data.quality    return total&amp;#1">
+<meta name="twitter:image" content="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="西南凯亚UX技术团队" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">西南凯亚UX技术团队</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://localhost:4000"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Vue源码探析之-Vue如何做到依赖收集与派发更新" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/" class="article-date">
+  <time datetime="2019-05-10T08:18:40.000Z" itemprop="datePublished">2019-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vue源码探析之-Vue如何做到依赖收集与派发更新
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1：-vue的Object变化侦测"><a href="#1：-vue的Object变化侦测" class="headerlink" title="1： vue的Object变化侦测"></a>1： vue的Object变化侦测</h3><p>我们以一个data数据变化为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let data = &#123;price:&#123;data:5&#125;, quality:10&#125;</span><br><span class="line">let total = 0</span><br><span class="line">let getTotal = ()=&gt;&#123; </span><br><span class="line">    total = data.price.data* data.quality</span><br><span class="line">    return total</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们执行getTotal函数，打印total出来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(total) //50</span><br></pre></td></tr></table></figure></p>
+<p>然后给data的某个变量赋值：data.price.data = 10<br>此时的total依然是50，但是当我们再次执行函数 getTotal()，此时我们的total更新了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(total) //100</span><br></pre></td></tr></table></figure></p>
+<p>那么我们需要一种机制，访问变量的时候，把变量相关的函数放到一个地方保存起来，以便让我们给变量赋值的时候，再次从这个地方把函数取出来执行，Vue内部实现的就是这样一种“订阅者-观察者模式”只是他比我们想象的要做的更多，考虑的边界情况也更多。<br>我们现在定义两个函数replay和record，一个数组storage = [],一个全局变量 target = null<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function record()&#123; </span><br><span class="line">    storage.push(target)</span><br><span class="line">&#125;</span><br><span class="line">function replay()&#123;</span><br><span class="line">    storage.forEach(run=&gt;run())</span><br><span class="line">&#125;</span><br><span class="line">target = getTotal</span><br><span class="line"></span><br><span class="line">record()</span><br><span class="line">target()</span><br><span class="line">data.price.data = 10</span><br><span class="line">console.log(total ) //50</span><br><span class="line">replay ()</span><br><span class="line">console.log(total ) //100</span><br></pre></td></tr></table></figure></p>
+<p>那我们此时就需要一个class类来维护这样的机制，那就是一个负责维护目标列表的类，当我们需要它们重新运行时，这些目标列表会得到通知。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img1.png" alt="Vue源码探析之-Vue如何做到依赖收集与派发更新"><br>这个Dep类只负责依赖的收集和触发，设置 Dep类的静态方法Dep.target = null，现在我们需要考虑的是有没有一种方法，能在访问数据的时候触发depend,更新数据的时候触发notify,刚好ES5的Object.definePrototy就是做这样的事情，于是我们封装该原生方法为一个函数：<br>我们为需要监听的对象的每个子属性递归的去设置get和set,也就是执行defineReactive函数，这样当对象的任何子属性被访问和修改的时候，都会触发get和set函数，于是我们封装一个Observer类，他的作用就是遍历对象属性，给每个属性执行defineReactive函数，该函数给每个属性定义get和set监听<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/B200C348-D5B1-4BB1-8E35-54D7D218B966.png" alt="73f0a0d3172434a11b34d4b09df2f707"><br>但是目前我们只是具有了依赖收集和派发更新的能力，我们需要在数据变化的时候能有个回调，在回调里做组件更新等其他操作。我们需要一个中间人，在数据变化的时候通知它，它再通知其他地方，Watcher这个类就是这样一个中介者。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/4E3A2ED5-6A1E-4030-BB35-245D924B1818.png" alt="68130a79ef318f399d4ea9ea92e56c34"><br>里面的vm代表vue实例，expOrFn代表变量相关的函数，cb代表回调函数,其中get函数，负责把这个Watcher实例赋值给Dep.target,然后再执行一下变量相关的函数，这样便会触发getter收集依赖的逻辑，此时Dep类中的订阅者数组，其实里面放的全是Watcher的实例,每当变量数据发生更新，就会触发watcher的update方法，执行回调函数。</p>
+<blockquote>
+<h5 id="注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。"><a href="#注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。" class="headerlink" title="注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。"></a><strong>注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。</strong></h5></blockquote>
+<hr>
+<h3 id="2：-vue的Array变化侦测"><a href="#2：-vue的Array变化侦测" class="headerlink" title="2： vue的Array变化侦测"></a>2： vue的Array变化侦测</h3><h4 id="2-1-设置拦截方法"><a href="#2-1-设置拦截方法" class="headerlink" title="2.1 设置拦截方法"></a>2.1 设置拦截方法</h4><p>我们知道数组的有些原生方法会改变数组的元素，并且会改变数组本身，如何去监听数组元素的变化呢？vue采用的是拦截数组方法操作的方式。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/6D2EF0AE-59C4-44CF-AFC5-BAE8D622D87A.png" alt="6551dc493ecc40772138a6ef34680f9f"><br>它先定义了能改变数组本身的方法的集合<strong>originArrayMethods</strong>,把数组的原生方法保存到arrayProto, 然后创建一个对象arrayMethods继承数组的原型，arrayMethods打印出来是这样的：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/C9D2E984-2BEE-4AC1-8363-71622CFC4106.png" alt="222d5c2b3f1e2cd2a3d2d797eb058a32"><br>定义一个重要的工具函数：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/39A93AE6-3EB5-4B3B-8CBB-586C2AF49985.png" alt="9e00003aa8eb3f1ddab9e28a01ba8caa"></p>
+<p>然后调用Oject,getOwnPropertyNames(arrayMethods),创建对象的属性组成的数组arrayKeys，遍历originArrayMethods,给每个可改变数组的方法定义一个拦截函数：mutator,当你调用push,pop等方法实际执行的是mutator这个函数，里面返回Array.prototype.push.apply(this,args)等原生方法。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/186D3EB1-F894-4E57-B485-57B51610364D.png" alt="f3976483596917cf8ad15ebb73290938"><br>目前我们重新定义了操作数组的方法中那些能改变数组本身的方法，我们需要做的是只对需要响应的数组重置这些方法，那么自然会想到在给每个属性设置响应式的类Observer中去重置。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/865A3B28-5E0B-44BA-B16E-1D46911823D2.png" alt="87c81823b0f296811ed7f77f8edffb15"><br>我们在里面加个判断，如果需要设置响应的属性的值是数组的话，在它的原型<em>proto</em>上设置重置方法，但总有一天可能会不支持，也可能目前有些浏览器不支持<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/0177D2BF-BC4A-4477-81EC-EBA65E0B71CA.png" alt="b72b1b673ec2292c3e7bf1a245110b52"><br>那么我们需要进行降级处理：如果支持执行下面的protoAugment，如果不支持则执行copyAugment<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/CC95CCC5-E254-439D-85B2-6D4B71044731.png" alt="25e0e595748a1c6953c316c5ffab6cf3"></p>
+<h4 id="2-2-给数组的每个子属性都添加响应"><a href="#2-2-给数组的每个子属性都添加响应" class="headerlink" title="2.2 给数组的每个子属性都添加响应"></a>2.2 给数组的每个子属性都添加响应</h4><p>vue定义了一个方法 observeArray()遍历数组的每个元素，递归执行Observer实例添加响应，但有些数组的元素可能在之前已经添加了依赖响应，其实这时已经不用再去添加了，那我们需要给每个已经添加的依赖响应数据添加一个标记_ob_，然后判断数据里面是否存在这样的标记，如果有，那么我们不需要再次进行依赖收集工作，如果没有那么执行Observer实例的依赖收集工作。<br>因此在Observer中去给数据设置_ob_，_ob_的值就是Observer的实例，后面我们可以通过这个数据的_ob_拿到Observer实例的方法及属性<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img2.png" alt="25e0e595748a1c6953c316c5ffab6cf3"></p>
+<p>然后遍历数组元素，执行一个工具函数：observe(val)判断如果有_ob_ 那么返回该数据的Observer实例，如果没有，那么再次递归调用Observer实例设置响应：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/372F6A55-17AF-4405-A083-90C57ED949F9.png" alt="30320c5bc0561ac7a6be236c801d9689"><br>这样当我们把一个数组丢给Observer实例去执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Observer(array)</span><br></pre></td></tr></table></figure></p>
+<p>那么数组的所有子元素中，只要是对象的都会被添加依赖响应，都会有一个_ob_属性，<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/5221A3D0-CF83-44B6-BF6C-3B58F856FE74.png" alt="19f4d890096af660eb5c275ff4915f03"><br>_ ob _ 这个属性可以访问Observer实例上的属性和方法，里面的dep是Dep类的实例，负责保存该元素订阅了哪些watcher<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/C9607BD4-40E4-409F-A373-F2CEDF0DE75A.png" alt="b1fe7239f9f6e0b29a5dcea75f1cba64"><br>Array在getter中收集依赖，在拦截器中触发依赖，因此每当我们更改对象属性的值得时候，就会在拦截器中触发dep的notify方法，因为拦截器是原型方法，所以可以直接通过this._ ob _ 来访问Observer实例，而Observer里面又各自维护了dep实例，因此可以ob.dep.notify去通知依赖的Watcher数据发生了变化。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/23736D56-12E0-4DB2-A139-BA1C7EC766B6.png" alt="5ee4e8829f2fa5cb1010fa3306033f8b"></p>
+<p><strong>注意：对Array的变化侦测是通过拦截原型方法实现的，因此某些数组操作vue拦截不到：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.list[0]=2</span><br><span class="line">this.list.length = 0</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-3-watcher的内部原理"><a href="#2-3-watcher的内部原理" class="headerlink" title="2.3 watcher的内部原理"></a>2.3 watcher的内部原理</h4><p>watcher正如他的名字一样，是一个观察者的中介角色，数据发生变化时通知它，然后它再通知其他地方，下面是watcher的使用方式：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/F06AAC8A-04B3-4F3C-864C-0A9A194150C8.png" alt="133aaa2be822bb7315a6cdf5980df516"><br>在watcher的参数列表中，expOrFn可以是一个函数，也可以是一个属性访问路径如：data.price.data,此时只收集一个Dep,因为只依赖收集一个属性</p>
+<p>但凡事总有例外，expOrFn是一个函数，此时如果使用了多个数据，那么watcher就要收集多个depl ,比如上图中的updateComponent函数，里面使用了data.price.data和data.quality[0]这两个值，这种情况下Watcher内部会收集两个Dep——data.price.data的dep和data.quality的dep,同时这两个Dep中也会收集Watcher,这导致了data.price.data的dep和data.quality中任意一个数据发生变化，对应的Watcher都会得到通知。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/01F3B992-75C0-4872-806A-3B0B26A5B588.png" alt="79a68884456b7f5d3e58fcbdd7209329"><br>如上图，我们在Watcher中新增了这三个东西，我们使用depIds收集dep的id,用来判断当前watcher是否已经订阅了该dep,而deps这个数组用来收集当前这个watcher订阅了哪些dep。<br>watcher在执行get()方法读取数据时，会触发数据的getter操作（依赖收集的逻辑），当数据发生变化，会执行负责维护当前数据的dep实例的notify,方法，然后遍历subs中订阅的watcher调用watcher的update方法，把全局的Dep.target设为当前watcher实例并重新执行get()方法，去获取最新的数据，而读取数据就会再次走依赖收集的逻辑<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/A0EBB523-100E-4993-8D1E-22BC5CABDDE8.png" alt="67a68dbf9c1106caec18656c2a781809"><br>此时会执行depend()这个收集依赖的方法，调用watcher的addDep(),把该dep实例传入到watcher中，然后拿到此时这个负责维护这个数据的dep的id，判断当前这个watcher中是否已经订阅了该dep,这样避免了dep中的依赖重复，以免发生数据改变了，会同时通知多个相同watcher的情况<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/59E391B5-821F-494F-987B-C26451144F75.png" alt="7da43924e3c70e5a9be0a2b2dc17db35"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/" data-id="cjw8jcfcu0003splsp54jtswb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/13/Hexo图片部署和展示问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hexo图片部署和展示问题
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/29/5月24号UX分享-前端篇/">UX分享之-组件设计原则</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/">vue源码探析之-从nextTick谈JS事件队列</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/14/vue源码探析之-computed计算属性/">vue源码探析之-computed计算属性</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/13/Hexo图片部署和展示问题/">Hexo图片部署和展示问题</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/">Vue源码探析之-Vue如何做到依赖收集与派发更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Object<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

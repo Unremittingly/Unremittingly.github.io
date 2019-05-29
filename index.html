@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>西南凯亚UX技术团队</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="西南凯亚UX技术团队">
+<meta property="og:url" content="http://localhost:4000/index.html">
+<meta property="og:site_name" content="西南凯亚UX技术团队">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="西南凯亚UX技术团队">
+  
+    <link rel="alternate" href="/atom.xml" title="西南凯亚UX技术团队" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">西南凯亚UX技术团队</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://localhost:4000"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-5月24号UX分享-前端篇" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/29/5月24号UX分享-前端篇/" class="article-date">
+  <time datetime="2019-05-29T00:52:40.000Z" itemprop="datePublished">2019-05-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/29/5月24号UX分享-前端篇/">UX分享之-组件设计原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="组件设计原则"><a href="#组件设计原则" class="headerlink" title="组件设计原则"></a>组件设计原则</h2><h4 id="1、就近管理"><a href="#1、就近管理" class="headerlink" title="1、就近管理"></a>1、就近管理</h4><ol>
+<li>单文件开发</li>
+<li>依赖的静态资源放在同级目录</li>
+<li>相关联组件也放在同级目录</li>
+<li><p><img src="/2019/05/29/5月24号UX分享-前端篇/6CFBB235-A69A-45A7-AEB4-F3001F9BC48C.png" alt="7c6ab1b41682fbfcd97cd2185ce7bc05"></p>
+<h4 id="2、高复用性"><a href="#2、高复用性" class="headerlink" title="2、高复用性"></a>2、高复用性</h4><blockquote>
+<p>最重要的一点，是需要转变一个观念。我们应该以组件为单位，而不是以页面为单位进行开发。<br>不同页面之间可以由同一个业务组件组成</p>
+</blockquote>
+</li>
+<li><p>页面级别的复用（基础组件）</p>
+</li>
+<li>项目级别的复用（私有组件库）</li>
+<li>公司级别的复用（开源组件库）</li>
+</ol>
+<h4 id="3、分层设计"><a href="#3、分层设计" class="headerlink" title="3、分层设计"></a>3、分层设计</h4><p>以一个基础的第三方插件比如（better-scroll）为第一层级，逐级实现复杂的组件<br>better-scroll&gt;popup&gt;picker&gt;cascadePicker&gt;城市选择器和时间选择器</p>
+<h4 id="4、灵活扩展"><a href="#4、灵活扩展" class="headerlink" title="4、灵活扩展"></a>4、灵活扩展</h4><p>我们常看到一些优秀的组件库，传入的值既可以是一个 String/Number，也可以是一个函数。<br>比如ElementUI的Table组件，当你想要显示树形数据的时候，必须传入row-key。<br>row-key的作用：行数据的 Key，用来优化 Table 的渲染。类型为 String 时，支持多层访问：user.info.id，但不支持 user.info[0].id，此种情况请使用 Function</p>
+<p><child-component :prop1="var1" :prop2="var2" :prop="var3" ...><br>v-bind={子组件props集合}</child-component></p>
+<p>如果你子组件修改了父组件传入的对象A，父组件的对象A也会发生修改，所以我一般只有子组件不会修改父组件传入的值的情况下，我才会传入对象。父组件把对象传入子组件，是实现双向绑定的hack方式，但不推荐</p>
+<h2 id="开发规范"><a href="#开发规范" class="headerlink" title="开发规范"></a>开发规范</h2><h4 id="目录设计"><a href="#目录设计" class="headerlink" title="目录设计"></a>目录设计</h4><p><img src="/2019/05/29/5月24号UX分享-前端篇/BA9215FA-69F1-457B-8BB8-DE70BAEF08DF.png" alt="c5f316e726acf8dfe0f2d60628242de0"></p>
+<h4 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h4><h5 id="1、HTML部分"><a href="#1、HTML部分" class="headerlink" title="1、HTML部分"></a>1、HTML部分</h5><ul>
+<li>使用.vue单文件开发组件</li>
+<li>template 模板尽量使用语义化标签</li>
+<li>遇到相同的结构尽量考虑抽象出来</li>
+</ul>
+<h5 id="2、css部分"><a href="#2、css部分" class="headerlink" title="2、css部分"></a>2、css部分</h5><ul>
+<li>CSS预处理器(stylus、less、sass)、autoprefixer </li>
+<li>定义全局变量:颜色、字体 </li>
+<li>定义全局的mixin函数</li>
+<li>组件样式使用scope或者BEM规范</li>
+<li>使用eslint</li>
+<li>避免使用魔术字符串和魔术数字、用常量代替(<u>魔术字符串指的是，在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值)</u><h5 id="3、js部分"><a href="#3、js部分" class="headerlink" title="3、js部分"></a>3、js部分</h5></li>
+<li>相同的逻辑可以考虑抽象出来mixin<h2 id="组件通信"><a href="#组件通信" class="headerlink" title="组件通信"></a>组件通信</h2><h5 id="1、组件A-gt-组件B-gt-组件C"><a href="#1、组件A-gt-组件B-gt-组件C" class="headerlink" title="1、组件A-&gt;组件B-&gt;组件C"></a>1、组件A-&gt;组件B-&gt;组件C</h5>A props 到B ,B props到c ,c再emit到b,b emit<br>很显然A-&gt;C，第一种通过props和$emit的方式，使得组件之间的业务逻辑臃肿不堪，B组件在其中仅仅充当的是一个中转站的作用。如使用第二种 Vuex的方式，某些情况下似乎又有点大材小用的意味，（仅仅是想实现组件之间的一个数据传递，并非数据共享的概念）。第三种情况的使用在实际的项目操作中发现，如不能实现很好的事件监听与发布的管理，往往容易导致数据流的混乱，在多人协作的项目中，不利于项目的维护。<br>多级组件嵌套需要传递数据时，通常使用的方法是通过vuex。如果仅仅是传递数据，而不做中间处理，使用 vuex 处理，未免有点杀鸡用牛刀。Vue 2.4 版本提供了另一种方法，使用 v-bind=”$attrs”, 将父组件中不被认为 props特性绑定的属性传入子组件中，通常配合 interitAttrs 选项一起使用。之所以要提到这两个属性，是因为两者的出现使得组件之间跨组件的通信在不依赖 vuex 和eventBut 的情况下变得简洁，业务清晰。</li>
+</ul>
+<p>可以用 $listeners 去整体接收监听的事件，{event1: ƒ, even2: ƒ}以一个对象去接收，此时在父组件中子组件模板上监听的两个事件不但可以被子组件实例属性 $listeners 去整体接收，并且同时可以在子组件进行触发。<br><strong>总结</strong>：<br>1:data 与 props 的数据存放要素<br>2:单个组件 $emit 与 $on 的通信，父子组件 v-on 与 $emit 的通信<br>3:.sync 和 v-model 双向绑定的模式<br>4: $attrs 与 $listeners 深层次数据传递与行为交互的运用模式</p>
+<h5 id="2、vue-observable"><a href="#2、vue-observable" class="headerlink" title="2、vue.observable"></a>2、vue.observable</h5><p>返回的对象可以直接用于渲染函数和计算属性内，并且会在发生改变时触发相应的更新。也可以作为最小化的跨组件状态存储器，具体用法点击<a href="https://cn.vuejs.org/v2/api/#Vue-observable" target="_blank" rel="noopener">查看</a></p>
+<h5 id="3、智能组件原理："><a href="#3、智能组件原理：" class="headerlink" title="3、智能组件原理："></a><strong>3、智能组件原理：</strong></h5><p>智能组件可以称为第三方通用组件，也可以称之为业务型公用组件，与父组件之间的关系是完全解耦的，只能通过 props 进行数据传递，event 进行事件传递，不依赖于任何环境，只需要传递相应的数据和事件，就能得到你想要的操作。</p>
+<p>其中具有代表性的就是函数式组件</p>
+<ol>
+<li>在template标签上标明 functional</li>
+<li>只接受props</li>
+<li>不需要script标签<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- list.vue 函数式组件&gt;</span><br><span class="line">&lt;template functional&gt;</span><br><span class="line">&lt;div&gt;</span><br><span class="line">&lt;p v-for=&quot;item in props.items&quot; @click=&quot;props.itemClick(item)&quot;&gt;</span><br><span class="line">&#123;&#123;item&#125;&#125;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><a href="https://cn.vuejs.org/v2/guide/render-function.html#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">函数式组件详情见这里</a></p>
+<h5 id="4、木偶组件原理："><a href="#4、木偶组件原理：" class="headerlink" title="4、木偶组件原理："></a><strong>4、木偶组件原理：</strong></h5><p>木偶组件是为了业务页面进行拆分而形成的组件模式。比如一个页面，可以分多个模块，而每一个模块与其余页面并没有公用性，只是纯粹拆分。<br>当一个智能组件是由两个组件组成的一个复合智能组件，而它的子组件与父组件之间就有一个木偶的原理，因为两者是相互的，在开发者调用并需保持它们的关系性、规范性，一旦改变其本身的模式则会无效。<br>demo 组件已经明确的知道是 Hello 组件的子组件，也可以是 demo 组件是 Hello 组件的木偶组件，通过 $parent 就可以随意取到和改动父组件实例的属性（数据）。同样这也并不违反数据的单向流的原则，可以对比一下通过 v-on 和 $emit 或者 v-model，.sync 这几种方法，不但方便很多，还更加快捷，并且明确了组件的位置，就像木偶一样，永远不会变，它的父组件永远只会是同一个。</p>
+<h2 id="模块依赖-vue-create-api"><a href="#模块依赖-vue-create-api" class="headerlink" title="模块依赖 vue-create-api"></a>模块依赖 vue-create-api</h2><ul>
+<li>一个能够让vue组件通过API方式调用的组件</li>
+<li>动态把组件挂载到body下</li>
+<li>支持传入响应式props、events、插槽、单例和多例模式</li>
+<li>在普通js中也能调用</li>
+</ul>
+<h2 id="vue项目最佳实践"><a href="#vue项目最佳实践" class="headerlink" title="vue项目最佳实践"></a>vue项目最佳实践</h2><h4 id="1、以短横线分隔方式命名事件"><a href="#1、以短横线分隔方式命名事件" class="headerlink" title="1、以短横线分隔方式命名事件"></a>1、以短横线分隔方式命名事件</h4><p>触发/监听自定义事件时，应该始终使用短横线分隔<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.$emit(&apos;my-event&apos;)</span><br><span class="line">v-on:my-event</span><br></pre></td></tr></table></figure></p>
+<p>HTML对大小写不敏感，一般情况下，JS的大小写变量放到HTML中，会将大写改成小写，并在前面添加短杠</p>
+<h4 id="2、v-for循环中使用key"><a href="#2、v-for循环中使用key" class="headerlink" title="2、v-for循环中使用key"></a>2、v-for循环中使用key</h4><p>使用v-for更新已渲染的元素列表时,默认采用就地复用策略;列表数据修改的时候,会根据key值去判断某个值是否修改,如果修改,则重新渲染这一项,否则复用之前的元素;同时key值应该是唯一且不变的值</p>
+<h4 id="3、不要在使用v-for的同一元素上使用v-if"><a href="#3、不要在使用v-for的同一元素上使用v-if" class="headerlink" title="3、不要在使用v-for的同一元素上使用v-if"></a>3、不要在使用v-for的同一元素上使用v-if</h4><p>同时使用的情况下，就算是只需要渲染一部分用户，也同样会遍历整个列表。<br><img src="/2019/05/29/5月24号UX分享-前端篇/44E094F7-7BF2-472C-95B4-B7F60B880FE0.png" alt="a820a2adf6d59af9b6009767ff5049b4"><br>通过将其更换为在如下的一个计算属性上遍历：<br><img src="/2019/05/29/5月24号UX分享-前端篇/AEF51262-2433-4949-957B-FDF418CD34EE.png" alt="d3031812492cdb92ef6183df286f2cdd"><br>过滤后的列表只会在 users 数组发生相关变化时才被重新运算，过滤更高效。<br>使用 v-for=”user in activeUsers” 之后，我们在渲染的时候只遍历活跃用户，渲染更高效。<br>解藕渲染层的逻辑，可维护性 (对逻辑的更改和扩展) 更强。</p>
+<h4 id="4、不要在created生命周期和watch中调用同一个方法"><a href="#4、不要在created生命周期和watch中调用同一个方法" class="headerlink" title="4、不要在created生命周期和watch中调用同一个方法"></a>4、不要在created生命周期和watch中调用同一个方法</h4><p>如果我们需要在组件初始化以及侦听属性变化时调用同一个方法，通常的做法像下面这样<br><img src="/2019/05/29/5月24号UX分享-前端篇/182926D9-AB79-4B8A-A0AA-0FB9E66D329A.png" alt="947c3d8e45a54e916268831b14230ee8"><br>这样的话，在组件实例化的时候doSomething会多触发一次。<br>正确的做法应该是把所需要执行的方法放到watch里面，避免在created钩子里写重复代码<br><img src="/2019/05/29/5月24号UX分享-前端篇/01A501A9-F305-4DF0-B8AD-5A577F03BEEB.png" alt="357755326f9e2b90f9781aeda255b691"></p>
+<h2 id="vue应用的性能优化"><a href="#vue应用的性能优化" class="headerlink" title="vue应用的性能优化"></a>vue应用的性能优化</h2><h4 id="如何定位Vue应用性能问题"><a href="#如何定位Vue应用性能问题" class="headerlink" title="如何定位Vue应用性能问题"></a>如何定位Vue应用性能问题</h4><p>Vue 应用的性能问题可以分为两个部分，第一部分是运行时性能问题，第二部分是加载性能问题。<br>和其他 web 应用一样，定位 Vue 应用性能问题最好的工具是 Chrome Devtool，通过 Performance 工具可以用来录制一段时间的 CPU 占用、内存占用、FPS 等运行时性能问题，通过 Network 工具可以用来分析加载性能问题。<br>例如，通过 Performance 工具的 Bottom Up 标签我们可以看出一段时间内耗时最多的操作这对于优化 CPU 占用和 FPS 过低非常有用，可以看出最为耗时的操作发生在哪里，可以知道具体函数的执行时间，定位到瓶颈之后，我们就可以做一些针对性的优化。<br><img src="/2019/05/29/5月24号UX分享-前端篇/09417413-C284-4326-B2A9-9DA3B63D1D4B.png" alt="c82f964722a5ec5887d6d9f0b8f038e9"><br><img src="/2019/05/29/5月24号UX分享-前端篇/79F42553-36A0-4DC4-82DC-E8FC5F96EED1.png" alt="65fef0ceb772b991ad06d2ed04513334"></p>
+<h4 id="vue应用运行时性能优化建议"><a href="#vue应用运行时性能优化建议" class="headerlink" title="vue应用运行时性能优化建议"></a>vue应用运行时性能优化建议</h4><ol>
+<li>引入生产环境的vue文件<br> 开发环境下，Vue 会提供很多警告来帮你对付常见的错误与陷阱。而在生产环境下，这些警告语句没有用，反而会增加应用的体积。有些警告检查还有一些小的运行时开销。<br>当使用 webpack 或 Browserify 类似的构建工具时，Vue 源码会根据 process.env.NODE_ENV 决定是否启用生产环境模式，默认情况为开发环境模式。在 webpack 与 Browserify 中都有方法来覆盖此变量，以启用 Vue 的生产环境模式，同时在构建过程中警告语句也会被压缩工具去除</li>
+<li>使用单文件组件预编译模板<br> 当使用 DOM 内模板或 JavaScript 内的字符串模板时，模板会在运行时被编译为渲染函数。通常情况下这个过程已经足够快了，但对性能敏感的应用还是最好避免这种用法。<br>预编译模板最简单的方式就是使用单文件组件——相关的构建设置会自动把预编译处理好，所以构建好的代码已经包含了编译出来的渲染函数而不是原始的模板字符串。</li>
+</ol>
+<h4 id="vue应用性能加载优化建议"><a href="#vue应用性能加载优化建议" class="headerlink" title="vue应用性能加载优化建议"></a>vue应用性能加载优化建议</h4><ol>
+<li>使用Object.freeze()提升性能<br> Object.freeze() 可以冻结一个对象，防止对象被修改<br>在Vue中，对于data或者Vuex里面使用了freeze冻结了的对象，vue不会做getter或者setter的转换，当你有一个巨大的数组或者对象，并且确信数据不会改变，使用Object.freeze()可以大大提升性能。<br><strong>原理：</strong><br>当你把一个普通的JavaScript对象传给Vue实例的data选项，Vue将遍历此对象所有的属性，并使用 Object.defineProperty把这些属性全部转为 getter/setter，这些 getter/setter 对用户来说是不可见的，但是在内部它们让 Vue 追踪依赖，在属性被访问和修改时通知变化。但 Vue 在遇到像 Object.freeze() 这样被设置为不可配置之后的对象属性时，不会为对象加上 setter getter 等数据劫持的方法。该方法适用于展示类场景</li>
+</ol>
+<p>2.利用服务端渲染（ssr）和预渲染（prerender）提升性能<br><img src="/2019/05/29/5月24号UX分享-前端篇/17BFD262-1685-43E1-A8E6-F4E4E8AE41D2.png" alt="b0c7f195065d7498d3eba24f32892999"></p>
+<p>3.通过组件懒加载优化超长应用内容加载性能<br>Vue-lazy-component常应用于含大量图片的瀑布流布局、无限列表等</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/29/5月24号UX分享-前端篇/" data-id="cjw8jcfct0002splsfubrvysn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vue源码探析之-从nextTick谈JS事件队列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/" class="article-date">
+  <time datetime="2019-05-15T08:18:40.000Z" itemprop="datePublished">2019-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/">vue源码探析之-从nextTick谈JS事件队列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="1、例子"><a href="#1、例子" class="headerlink" title="1、例子"></a>1、例子</h4><p><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/C34880C9-9D14-4892-8D04-5B2F378D1B45.png" alt="b39f80f93ee33f0b21f60097810d8617"><br>当鼠标点击点我这个按钮后，会赋值一个新的字符串给“点我”这个字段，从而改变这个按钮的宽度，此时我会获取这个宽度<br><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/52CE0A54-104E-4393-8E56-59BE635C9F46.png" alt="3e256cb4f34388a523e48c154b9bcef0"><br>此时红色字段被复制后的宽度为146px,但我获取到的宽度还是之前的“点我”这个字段的宽度，这种情况在实际项目中非常的常见，比如通过axios.get(url,data)从远端服务器获取json数据，赋值给vue中data的某个属性，我们此时需要获取到数据改变后的dom的高度，以便进行相关计算，此时我们希望获取到vue在监听到data改变触发重新渲染虚拟DOM后得到的实际高度，但你会发现获取到的dom依然是数据没更新之前的高度，因为此时dom还没有更新。<br>demo函数如下<br><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/363CF6B8-DBCB-4C56-97B3-B49EE55F35B6.png" alt="79e1d45e5a7f83b789a9724f7293cdf8"><br>可以看到数据更新后，在nextTick中才获取到了Dom更新后的高度。<br>更改数据后，马上获取dom，会发现dom依然是以前那个数据变化前的dom，说明dom的更新是异步的,下面介绍为啥vue会使用异步更新队列的方式，因为他会等一个组件内的所有状态更新完毕后最后执行组件的watcher，通知视图更新，所以你并不能马上获得更新后的dom。</p>
+<h4 id="2、为什么vue使用异步更新队列"><a href="#2、为什么vue使用异步更新队列" class="headerlink" title="2、为什么vue使用异步更新队列"></a>2、为什么vue使用异步更新队列</h4><p>Vue在2.0以后实现了中等粒度的数据变化侦测，变化侦测的通知只发送到组件级别，组件内部用到的所有状态变化都会通知到同一个watcher中，然后虚拟Dom会对整个组件进行diff对比有策略的更改Dom，也就是说如果在同一个事件循环中有两个数据发生了变化，那么组件的watcher会收到两份通知，从而进行两次的渲染，事实上并没有进行两次，而是等所有状态都修改完毕后，一次性将整个组件的Dom渲染到最新即可。<strong>这种在缓冲时去除重复数据对于避免不必要的计算和DOM操作非常重要。</strong><br>vue把收到通知的watcher缓存到一个队列里面，在添加到队列之前，对比是否有相同的watcher，如果不同就会将watcher push到队列里面，然后在下次的事件循环中，遍历执行watcher中的update，触发渲染流程并清空队列。</p>
+<h4 id="3、nextTick的触发时机"><a href="#3、nextTick的触发时机" class="headerlink" title="3、nextTick的触发时机"></a>3、nextTick的触发时机</h4><p>当数据发生改变触发watcher的派发更新操作，watcher的update会执行queuewatcher(this)，把当前watcher push到queue队列中，然后执行nextTick(flushSchedulerQueue)<br><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/4B23FD26-E4AA-468E-AF39-DBF1D2884312.png" alt="19bd724cf221a685d1aeb8b43c2086f0"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (!pending) &#123;</span><br><span class="line">  pending = true;</span><br><span class="line">  timerFunc();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这句的意思是如果不是本轮事件循环中第一次调用nextTick,也就是说，此时任务队列中已经被添加了一个执行回调列表的任务，那么我们不需要再执行timerFunc()向微任务事件队列中添加重复的任务。timerFunc方法会把flushCallbacks推送到微任务事件队列中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if (typeof Promise !== &apos;undefined&apos; &amp;&amp; isNative(Promise)) &#123;</span><br><span class="line">        var p = Promise.resolve();</span><br><span class="line">        timerFunc = function () &#123;</span><br><span class="line">            p.then(flushCallbacks);</span><br><span class="line">            if (isIOS) &#123; setTimeout(noop); &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        isUsingMicroTask = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>flushCallbacks的作用就是for循环遍历执行callbacks数组里面的函数。<br>前面执行了nextTick(flushSchedulerQueue)此时callbacks数组里面，就会有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[function()&#123;flushSchedulerQueue.call(ctx)&#125;]</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/42F66E37-AB42-45E7-AFDE-D78FFDCAF5CB.png" alt="096516d4450f52503846e05082fd85c4"><br>这个flushSchedulerQueue的作用是：刷新队列并运行观察者，通知视图更新，需要注意的是，这个函数会先对queue中的watcher根据watcher的ID进行排序，原因有三：</p>
+<p>1、组件从父组件更新到子组件。(因为父组件总是这样创建于子组件之前)<br>2、组件的user watcher在其 render watcher之前运行(因为user watcher是在 render watcher之前创建的)<br>3、如果一个组件在父组件的视图更新期间被销毁，可以跳过它的观察者。</p>
+<p>此时如果紧接着手动调用this.$nextTick(function(){}),就会在callbacks数组队列中push入该回调函数cb。那什么时候执行微任务队列中的flushCallbacks呢？我们知道，当执行栈中的所有任务都执行完毕后，会检查微任务队列是否有事件存在，如果存在（flushCallbacks）会依次执行微任务队列中事件对应的回调，直到清空微任务队列。<br>因此nextTick的回调在“下次Dom更新周期”执行是指在下次执行栈中所有同步任务都执行完毕，检查微任务队列的事件并执行的时候更新Dom。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/" data-id="cjw8jcfcn0001splsn2v2xxur" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vue源码探析之-computed计算属性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/14/vue源码探析之-computed计算属性/" class="article-date">
+  <time datetime="2019-05-14T08:18:40.000Z" itemprop="datePublished">2019-05-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/14/vue源码探析之-computed计算属性/">vue源码探析之-computed计算属性</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2019/05/14/vue源码探析之-computed计算属性/ED8D1AB5-E70B-4AE6-93D2-78E474E58070.png" alt="180c218efc03be4753bd6b00032edd45"><br>当 number 变量被修改导致更新视图的时候，methodFullName 每次都会执行,而 computedFullName 只会在页面初始化的时候执行一次，Vue 推荐开发者将 method 和 compute 属性区分开来，能够有效的提升性能，避免执行一些不必要的代码.</p>
+<p>在initState中，vue会判断用户是否定义了computed<br><img src="/2019/05/14/vue源码探析之-computed计算属性/76AE2FDD-0CEA-4B2F-8BB7-EDAE45FED586.png" alt="6fee3389693888bc3825717b242f7fa6"><br>如果定义了，那么执行initComputed方法。<br><img src="/2019/05/14/vue源码探析之-computed计算属性/43B59F15-694E-4117-99C0-B004D7FFEA63.png" alt="c996d740af940adc10aaabf141dc904d"><br>传入的computed是一个对象，里面就是你定义的一些computed方法。遍历computed对象，给每个计算属性实例化一个Watcher,因为传入的computedWatcherOptions传入的lazy为true，所以实例化的 watcher 即为 computed watcher（this._ computedWatchers ）。<br>最后判断在vue的data或者prop上是否定义了跟计算属性的名字相同的属性，如果定义了就警告。<br>如果没有定义就执行defineComputed(vm,key,userDef)方法。<br><img src="/2019/05/14/vue源码探析之-computed计算属性/AAA18A26-3DED-4ED2-8028-5411FAD6D6D9.png" alt="14652163385bb99455d476c96fa16926"><br>这个函数的目的就是给计算属性定义get函数和set函数<br><img src="/2019/05/14/vue源码探析之-computed计算属性/05641DBB-6CCB-450B-A087-C7833A3179BC.png" alt="fa4b88256fa3705eb128816579be2ee7"><br>如果不是服务端渲染的话，那么计算属性的get来自createComputedGetter这个高阶函数返回的函数：computedGetter<br><img src="/2019/05/14/vue源码探析之-computed计算属性/4AD220C2-FD23-4A14-BA40-3A4AE12F4FAE.png" alt="a5ec06835046c1dafbce89c71e91fd8a"></p>
+<p>当执行$mount(‘#app’)进行模板编译，template模板转会换成render函数，此时对模板中的变量进行访问，此时会触发computedFullName的get函数，也就是刚刚高阶函数返回的computedGetter，通过 key 获取到第一步中定义的 computed watcher，随后会判断这个 computed watcher 的 dirty 属性是否为 true，当 dirty 为 true 时， 会执行 <strong>evaluate</strong> 方法, evaluate 内部会执行计算属性的函数,并且将 watcher 的 value 属性等于函数执行后的结果也就是最终计算出来的值。<br>dirty 属性是一个用来检测当前的 computed watcher是否需要重新执行的一个标志,这也是计算属性和普通method的区别，结合上图可以发现，当 dirty 为 false 时，就不会去执行 evaluate 也就不会执行计算属性的函数，可以看到最后直接就返回了 watcher.value 表示这次不会进行计算，会直接使用以前的 value 的值<br>当第一次触发computedGetter 时，dirty 属性的默认值是 true ，那是因为在初始化 computed watcher时候 Vue 将 dirty 属性等于了 lazy 属性，即为 true。</p>
+<h3 id="evaluate（求…的值）方法中的两步"><a href="#evaluate（求…的值）方法中的两步" class="headerlink" title="evaluate（求…的值）方法中的两步"></a>evaluate（求…的值）方法中的两步</h3><p><img src="/2019/05/14/vue源码探析之-computed计算属性/E715519B-355E-4DD2-9EB0-FC86F72C14E3.png" alt="20c47f1bde660e9007b7d0a98c1c9cb0"></p>
+<h4 id="1、get方法"><a href="#1、get方法" class="headerlink" title="1、get方法"></a>1、get方法</h4><p>第一行执行了 get 方法, get 方法是所有 watcher 用来求值的通用方法<br><img src="/2019/05/14/vue源码探析之-computed计算属性/3DD3BE35-DB55-4430-AE06-7A3A7A122D38.png" alt="60680384f1c82fef0aa4870f52359067"><br>get 主要就做了这三步</p>
+<ol>
+<li>将当前这个 watcher 作为栈顶的 watcher 推入栈</li>
+<li>执行getter方法</li>
+<li>将这个 watcher 弹出栈</li>
+</ol>
+<p>我们知道 Vue.js 会维护一个全局的栈用来存放 watcher ，每当触发响应式变量内部的 getter 时，就会收集这个全局的栈的顶部的 watcher（即Dep.target），将这个 watcher 存入响应式变量内部保存的dep中</p>
+<p><strong>第一步</strong>：<strong>通过 pushTarget 将当前的 computed watcher 推入全局的栈中</strong><br>此时Dep.target就指向这个栈顶的 computed watcher<br><img src="/2019/05/14/vue源码探析之-computed计算属性/624BDFDE-57B2-43A5-AC75-DFA0F469DBC6.png" alt="34405d53e3971f3c0e410926fd8b6680"></p>
+<p><strong>第二步</strong>：<strong>执行 getter 方法</strong><br>Getter就是刚刚我们给每个计算属性实例化watcher时传入的Getter, 对于 computed watcher，getter 方法就是计算属性的函数，执行函数将返回的值赋值给 value 属性，而当计算属性的函数执行时，如果内部含有其他的响应式变量，会触发它们内部的 getter ，将第一步放入作为当前栈顶的 computed watcher 存入响应式变量内部的dep对象中</p>
+<p><strong>第三步</strong>: <strong>将这个 computed watcher 弹出全局的栈</strong><br>之所以将这个 computed watcher 推入又弹出，是为了让第二步执行内部的 getter 时，能让计算属性函数内部依赖的响应式变量收集到这个 computed watcher<br>对于计算属性来说，get 方法的作用就是进行求值</p>
+<h4 id="2、将dirty设为false"><a href="#2、将dirty设为false" class="headerlink" title="2、将dirty设为false"></a>2、将dirty设为false</h4><p>执行完 get 方法，即<strong>一旦计算属性执行过一次求值</strong>，就会将 dirty 属性设为 false，如果下次又触发了这个计算属性的 getter 会直接跳过求值阶段</p>
+<h3 id="结合例子"><a href="#结合例子" class="headerlink" title="结合例子"></a>结合例子</h3><p>在例子中，因为视图需要依赖 computedFullName 这个响应式变量，所以会触发它的内部的 getter，同时它又是一个计算属性，即会执行 computedGetter ，此时 dirty 属性为默认值 true，执行 evaluate =&gt; get =&gt; pushTarget<br>在 pushTarget 中，由于是 computed watcher 执行的 get 方法，所以 this 指向这个 computed watcher， 将它推入全局栈中作为 Dep.target，随后执行计算属性的函数<br>可以看到计算属性 computedFullName 的函数依赖了 firstName 和 lastName 这2个响应式变量，Vue在内部通过闭包的形式各自保存了一个 dep 对象，这个 dep 对象会收集当前栈顶的 watcher，即收集 computedFullName 这个计算属性的 computed watcher，所以当计算属性的函数执行完毕后，firstName 和 lastName 内部的 dep 对象中都会保存一个 computed watcher 收集完毕后，将 computed watcher 弹出，让栈恢复到之前的状态。<br><img src="/2019/05/14/vue源码探析之-computed计算属性/AB288B67-5E30-4A70-8D21-6C9FC5FFA8F0.png" alt="e24ba3233fc69a6dbf8f2481f77e5989"></p>
+<p>当我点击“加数字”，this.number自增1，导致视图更新，此时依然会触发computedFullName这个计算属性的访问执行computedGetter，此时的dirty是false,并不会执行watcher.evaluate的重新计算,然后判断当Dep.target 存在，说明在上一步弹出了 computed watcher 后全局的栈中仍有其他的 watcher。比如当视图中依赖了当前的计算属性，那当前栈顶的 watcher 就是 render watcher，此时执行watcher.depend().<br>depend 方法也非常简短，它会遍历当前 computed watcher 的deps属性，依次执行 dep 的 depend 方法</p>
+<p><strong>这时候执行 dep.depend 时会再次给这2个响应式变量收集栈顶的 watcher，即 render watcher，最终这2个变量内部的 dep 都保存了2个变量，一个 computed watcher，一个 render watcher</strong><br><img src="evernotecid://6D469DDB-B9F4-40F8-AE5B-270352FB2418/appyinxiangcom/16286025/ENResource/p637" alt="1303f5cbd03ea1d03bfc4c1b175e38c7.png"></p>
+<h4 id="内部依赖项被修改，重新执行计算"><a href="#内部依赖项被修改，重新执行计算" class="headerlink" title="内部依赖项被修改，重新执行计算"></a>内部依赖项被修改，重新执行计算</h4><p>当计算属性的依赖项，即 firstName 和 lastName 被修改时，会触发内部的 setter，Vue 会遍历响应式变量内部的 dep 保存的 watcher，最终会执行每个 watcher 的 update 方法，而变量内部dep保存的watcher是 computed watcher,<br><img src="/2019/05/14/vue源码探析之-computed计算属性/E6A88A8E-72E1-4D2F-99AF-EEEE07611273.png" alt="3366ce79df96c62cc7bf78d5e4c4b229"><br>可以看到 update 方法有3种情况:</p>
+<ol>
+<li>lazy：只存在于 computed watcher</li>
+<li>sync：只存在于 user watcher，当 user watcher 设置了 sync 会同步调用 watcher 不会延迟到 nextTick 后，基本不会用</li>
+<li>默认情况：一般的 user watcher 和 render watcher 都会执行 queueWatcher，将这些 watcher 放到 nextTick 后执行</li>
+</ol>
+<p>通过前面的 evaluate 和 depend 方法，firstName 和 lastName 内部的 dep 中都会保存2个 watcher，一个 computed watcher，一个 render watcher，当 lastName 被修改时，会触发内部的 setter，遍历 dep 保存的所有 watchers，这里会先执行 computed watcher 的 update 方法<br>同时前面说到在 computed watcher 求值结束后，会将 dirty 置为 false（执行evaluate），之后再获取计算属性的值时都会跳过 evaluate 方法直接返回以前的 value，而执行 computed watcher 的 update 方法会将 dirty 再次变成 true，整个computed watcher 只做这一件事，即取消 computed watcher 使用以前的缓存的标志。</p>
+<blockquote>
+<p>这个操作是同步执行的，也就是说即使 render watcher 或 user watcher 在 watchers 数组中比 computed watcher 靠前，但是由于前2个 watcher 一般是异步执行的，所以最终执行的时候 computed watcher 会优先执行</p>
+</blockquote>
+<p>而真正的求值操作是在 render watcher 中进行的，当遍历到第二个 render watcher 时，由于视图依赖了 fullName，会触发计算属性的 getter，再次执行之前的 computedGetter，此时由于上一步将 dirty 变成 true了，所以就会进入 evalutate 重新计算，此时 computedFullName 就拿到了最新的值”ggxlove”了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/14/vue源码探析之-computed计算属性/" data-id="cjw8jcfcw0004spls18t2pq7t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Hexo图片部署和展示问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/13/Hexo图片部署和展示问题/" class="article-date">
+  <time datetime="2019-05-13T01:49:00.000Z" itemprop="datePublished">2019-05-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/13/Hexo图片部署和展示问题/">Hexo图片部署和展示问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="1-安装插件"><a href="#1-安装插件" class="headerlink" title="1.安装插件"></a>1.安装插件</h5><pre><code>npm install hexo-asset-image --save
+</code></pre><h5 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h5><p> 在 <font color="red">_config.yml </font>配置文件中修改  <font color="red">post_asset_folder</font>  属性为  <font color="red">true</font><br> <img src="/2019/05/13/Hexo图片部署和展示问题/conf.png" alt="在这里插入图片描述"> </p>
+<h5 id="3-在文章中插入图片"><a href="#3-在文章中插入图片" class="headerlink" title="3.在文章中插入图片"></a>3.在文章中插入图片</h5><p> <img src="/2019/05/13/Hexo图片部署和展示问题/img1.png" alt="在这里插入图片描述"></p>
+<h5 id="4-生成并调试"><a href="#4-生成并调试" class="headerlink" title="4.生成并调试"></a>4.生成并调试</h5><pre><code>hexo g
+hexo s --debug
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/13/Hexo图片部署和展示问题/" data-id="cjw8jcfcj0000spls92iocubv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Vue源码探析之-Vue如何做到依赖收集与派发更新" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/" class="article-date">
+  <time datetime="2019-05-10T08:18:40.000Z" itemprop="datePublished">2019-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/">Vue源码探析之-Vue如何做到依赖收集与派发更新</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="1：-vue的Object变化侦测"><a href="#1：-vue的Object变化侦测" class="headerlink" title="1： vue的Object变化侦测"></a>1： vue的Object变化侦测</h3><p>我们以一个data数据变化为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let data = &#123;price:&#123;data:5&#125;, quality:10&#125;</span><br><span class="line">let total = 0</span><br><span class="line">let getTotal = ()=&gt;&#123; </span><br><span class="line">    total = data.price.data* data.quality</span><br><span class="line">    return total</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们执行getTotal函数，打印total出来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(total) //50</span><br></pre></td></tr></table></figure></p>
+<p>然后给data的某个变量赋值：data.price.data = 10<br>此时的total依然是50，但是当我们再次执行函数 getTotal()，此时我们的total更新了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(total) //100</span><br></pre></td></tr></table></figure></p>
+<p>那么我们需要一种机制，访问变量的时候，把变量相关的函数放到一个地方保存起来，以便让我们给变量赋值的时候，再次从这个地方把函数取出来执行，Vue内部实现的就是这样一种“订阅者-观察者模式”只是他比我们想象的要做的更多，考虑的边界情况也更多。<br>我们现在定义两个函数replay和record，一个数组storage = [],一个全局变量 target = null<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function record()&#123; </span><br><span class="line">    storage.push(target)</span><br><span class="line">&#125;</span><br><span class="line">function replay()&#123;</span><br><span class="line">    storage.forEach(run=&gt;run())</span><br><span class="line">&#125;</span><br><span class="line">target = getTotal</span><br><span class="line"></span><br><span class="line">record()</span><br><span class="line">target()</span><br><span class="line">data.price.data = 10</span><br><span class="line">console.log(total ) //50</span><br><span class="line">replay ()</span><br><span class="line">console.log(total ) //100</span><br></pre></td></tr></table></figure></p>
+<p>那我们此时就需要一个class类来维护这样的机制，那就是一个负责维护目标列表的类，当我们需要它们重新运行时，这些目标列表会得到通知。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img1.png" alt="Vue源码探析之-Vue如何做到依赖收集与派发更新"><br>这个Dep类只负责依赖的收集和触发，设置 Dep类的静态方法Dep.target = null，现在我们需要考虑的是有没有一种方法，能在访问数据的时候触发depend,更新数据的时候触发notify,刚好ES5的Object.definePrototy就是做这样的事情，于是我们封装该原生方法为一个函数：<br>我们为需要监听的对象的每个子属性递归的去设置get和set,也就是执行defineReactive函数，这样当对象的任何子属性被访问和修改的时候，都会触发get和set函数，于是我们封装一个Observer类，他的作用就是遍历对象属性，给每个属性执行defineReactive函数，该函数给每个属性定义get和set监听<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/B200C348-D5B1-4BB1-8E35-54D7D218B966.png" alt="73f0a0d3172434a11b34d4b09df2f707"><br>但是目前我们只是具有了依赖收集和派发更新的能力，我们需要在数据变化的时候能有个回调，在回调里做组件更新等其他操作。我们需要一个中间人，在数据变化的时候通知它，它再通知其他地方，Watcher这个类就是这样一个中介者。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/4E3A2ED5-6A1E-4030-BB35-245D924B1818.png" alt="68130a79ef318f399d4ea9ea92e56c34"><br>里面的vm代表vue实例，expOrFn代表变量相关的函数，cb代表回调函数,其中get函数，负责把这个Watcher实例赋值给Dep.target,然后再执行一下变量相关的函数，这样便会触发getter收集依赖的逻辑，此时Dep类中的订阅者数组，其实里面放的全是Watcher的实例,每当变量数据发生更新，就会触发watcher的update方法，执行回调函数。</p>
+<blockquote>
+<h5 id="注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。"><a href="#注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。" class="headerlink" title="注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。"></a><strong>注意点：由于js并没有提供元编程能力，那么针对对象属性的增加和删除，Vue并不能监听到。</strong></h5></blockquote>
+<hr>
+<h3 id="2：-vue的Array变化侦测"><a href="#2：-vue的Array变化侦测" class="headerlink" title="2： vue的Array变化侦测"></a>2： vue的Array变化侦测</h3><h4 id="2-1-设置拦截方法"><a href="#2-1-设置拦截方法" class="headerlink" title="2.1 设置拦截方法"></a>2.1 设置拦截方法</h4><p>我们知道数组的有些原生方法会改变数组的元素，并且会改变数组本身，如何去监听数组元素的变化呢？vue采用的是拦截数组方法操作的方式。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/6D2EF0AE-59C4-44CF-AFC5-BAE8D622D87A.png" alt="6551dc493ecc40772138a6ef34680f9f"><br>它先定义了能改变数组本身的方法的集合<strong>originArrayMethods</strong>,把数组的原生方法保存到arrayProto, 然后创建一个对象arrayMethods继承数组的原型，arrayMethods打印出来是这样的：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/C9D2E984-2BEE-4AC1-8363-71622CFC4106.png" alt="222d5c2b3f1e2cd2a3d2d797eb058a32"><br>定义一个重要的工具函数：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/39A93AE6-3EB5-4B3B-8CBB-586C2AF49985.png" alt="9e00003aa8eb3f1ddab9e28a01ba8caa"></p>
+<p>然后调用Oject,getOwnPropertyNames(arrayMethods),创建对象的属性组成的数组arrayKeys，遍历originArrayMethods,给每个可改变数组的方法定义一个拦截函数：mutator,当你调用push,pop等方法实际执行的是mutator这个函数，里面返回Array.prototype.push.apply(this,args)等原生方法。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/186D3EB1-F894-4E57-B485-57B51610364D.png" alt="f3976483596917cf8ad15ebb73290938"><br>目前我们重新定义了操作数组的方法中那些能改变数组本身的方法，我们需要做的是只对需要响应的数组重置这些方法，那么自然会想到在给每个属性设置响应式的类Observer中去重置。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/865A3B28-5E0B-44BA-B16E-1D46911823D2.png" alt="87c81823b0f296811ed7f77f8edffb15"><br>我们在里面加个判断，如果需要设置响应的属性的值是数组的话，在它的原型<em>proto</em>上设置重置方法，但总有一天可能会不支持，也可能目前有些浏览器不支持<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/0177D2BF-BC4A-4477-81EC-EBA65E0B71CA.png" alt="b72b1b673ec2292c3e7bf1a245110b52"><br>那么我们需要进行降级处理：如果支持执行下面的protoAugment，如果不支持则执行copyAugment<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/CC95CCC5-E254-439D-85B2-6D4B71044731.png" alt="25e0e595748a1c6953c316c5ffab6cf3"></p>
+<h4 id="2-2-给数组的每个子属性都添加响应"><a href="#2-2-给数组的每个子属性都添加响应" class="headerlink" title="2.2 给数组的每个子属性都添加响应"></a>2.2 给数组的每个子属性都添加响应</h4><p>vue定义了一个方法 observeArray()遍历数组的每个元素，递归执行Observer实例添加响应，但有些数组的元素可能在之前已经添加了依赖响应，其实这时已经不用再去添加了，那我们需要给每个已经添加的依赖响应数据添加一个标记_ob_，然后判断数据里面是否存在这样的标记，如果有，那么我们不需要再次进行依赖收集工作，如果没有那么执行Observer实例的依赖收集工作。<br>因此在Observer中去给数据设置_ob_，_ob_的值就是Observer的实例，后面我们可以通过这个数据的_ob_拿到Observer实例的方法及属性<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/img2.png" alt="25e0e595748a1c6953c316c5ffab6cf3"></p>
+<p>然后遍历数组元素，执行一个工具函数：observe(val)判断如果有_ob_ 那么返回该数据的Observer实例，如果没有，那么再次递归调用Observer实例设置响应：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/372F6A55-17AF-4405-A083-90C57ED949F9.png" alt="30320c5bc0561ac7a6be236c801d9689"><br>这样当我们把一个数组丢给Observer实例去执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new Observer(array)</span><br></pre></td></tr></table></figure></p>
+<p>那么数组的所有子元素中，只要是对象的都会被添加依赖响应，都会有一个_ob_属性，<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/5221A3D0-CF83-44B6-BF6C-3B58F856FE74.png" alt="19f4d890096af660eb5c275ff4915f03"><br>_ ob _ 这个属性可以访问Observer实例上的属性和方法，里面的dep是Dep类的实例，负责保存该元素订阅了哪些watcher<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/C9607BD4-40E4-409F-A373-F2CEDF0DE75A.png" alt="b1fe7239f9f6e0b29a5dcea75f1cba64"><br>Array在getter中收集依赖，在拦截器中触发依赖，因此每当我们更改对象属性的值得时候，就会在拦截器中触发dep的notify方法，因为拦截器是原型方法，所以可以直接通过this._ ob _ 来访问Observer实例，而Observer里面又各自维护了dep实例，因此可以ob.dep.notify去通知依赖的Watcher数据发生了变化。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/23736D56-12E0-4DB2-A139-BA1C7EC766B6.png" alt="5ee4e8829f2fa5cb1010fa3306033f8b"></p>
+<p><strong>注意：对Array的变化侦测是通过拦截原型方法实现的，因此某些数组操作vue拦截不到：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.list[0]=2</span><br><span class="line">this.list.length = 0</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-3-watcher的内部原理"><a href="#2-3-watcher的内部原理" class="headerlink" title="2.3 watcher的内部原理"></a>2.3 watcher的内部原理</h4><p>watcher正如他的名字一样，是一个观察者的中介角色，数据发生变化时通知它，然后它再通知其他地方，下面是watcher的使用方式：<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/F06AAC8A-04B3-4F3C-864C-0A9A194150C8.png" alt="133aaa2be822bb7315a6cdf5980df516"><br>在watcher的参数列表中，expOrFn可以是一个函数，也可以是一个属性访问路径如：data.price.data,此时只收集一个Dep,因为只依赖收集一个属性</p>
+<p>但凡事总有例外，expOrFn是一个函数，此时如果使用了多个数据，那么watcher就要收集多个depl ,比如上图中的updateComponent函数，里面使用了data.price.data和data.quality[0]这两个值，这种情况下Watcher内部会收集两个Dep——data.price.data的dep和data.quality的dep,同时这两个Dep中也会收集Watcher,这导致了data.price.data的dep和data.quality中任意一个数据发生变化，对应的Watcher都会得到通知。<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/01F3B992-75C0-4872-806A-3B0B26A5B588.png" alt="79a68884456b7f5d3e58fcbdd7209329"><br>如上图，我们在Watcher中新增了这三个东西，我们使用depIds收集dep的id,用来判断当前watcher是否已经订阅了该dep,而deps这个数组用来收集当前这个watcher订阅了哪些dep。<br>watcher在执行get()方法读取数据时，会触发数据的getter操作（依赖收集的逻辑），当数据发生变化，会执行负责维护当前数据的dep实例的notify,方法，然后遍历subs中订阅的watcher调用watcher的update方法，把全局的Dep.target设为当前watcher实例并重新执行get()方法，去获取最新的数据，而读取数据就会再次走依赖收集的逻辑<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/A0EBB523-100E-4993-8D1E-22BC5CABDDE8.png" alt="67a68dbf9c1106caec18656c2a781809"><br>此时会执行depend()这个收集依赖的方法，调用watcher的addDep(),把该dep实例传入到watcher中，然后拿到此时这个负责维护这个数据的dep的id，判断当前这个watcher中是否已经订阅了该dep,这样避免了dep中的依赖重复，以免发生数据改变了，会同时通知多个相同watcher的情况<br><img src="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/59E391B5-821F-494F-987B-C26451144F75.png" alt="7da43924e3c70e5a9be0a2b2dc17db35"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/" data-id="cjw8jcfcu0003splsp54jtswb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/29/5月24号UX分享-前端篇/">UX分享之-组件设计原则</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/">vue源码探析之-从nextTick谈JS事件队列</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/14/vue源码探析之-computed计算属性/">vue源码探析之-computed计算属性</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/13/Hexo图片部署和展示问题/">Hexo图片部署和展示问题</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/">Vue源码探析之-Vue如何做到依赖收集与派发更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Object<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

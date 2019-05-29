@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>vue源码探析之-从nextTick谈JS事件队列 | 西南凯亚UX技术团队</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1、例子当鼠标点击点我这个按钮后，会赋值一个新的字符串给“点我”这个字段，从而改变这个按钮的宽度，此时我会获取这个宽度此时红色字段被复制后的宽度为146px,但我获取到的宽度还是之前的“点我”这个字段的宽度，这种情况在实际项目中非常的常见，比如通过axios.get(url,data)从远端服务器获取json数据，赋值给vue中data的某个属性，我们此时需要获取到数据改变后的dom的高度，以便进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue源码探析之-从nextTick谈JS事件队列">
+<meta property="og:url" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/index.html">
+<meta property="og:site_name" content="西南凯亚UX技术团队">
+<meta property="og:description" content="1、例子当鼠标点击点我这个按钮后，会赋值一个新的字符串给“点我”这个字段，从而改变这个按钮的宽度，此时我会获取这个宽度此时红色字段被复制后的宽度为146px,但我获取到的宽度还是之前的“点我”这个字段的宽度，这种情况在实际项目中非常的常见，比如通过axios.get(url,data)从远端服务器获取json数据，赋值给vue中data的某个属性，我们此时需要获取到数据改变后的dom的高度，以便进">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/C34880C9-9D14-4892-8D04-5B2F378D1B45.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/52CE0A54-104E-4393-8E56-59BE635C9F46.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/363CF6B8-DBCB-4C56-97B3-B49EE55F35B6.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/4B23FD26-E4AA-468E-AF39-DBF1D2884312.png">
+<meta property="og:image" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/42F66E37-AB42-45E7-AFDE-D78FFDCAF5CB.png">
+<meta property="og:updated_time" content="2019-05-29T01:10:50.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue源码探析之-从nextTick谈JS事件队列">
+<meta name="twitter:description" content="1、例子当鼠标点击点我这个按钮后，会赋值一个新的字符串给“点我”这个字段，从而改变这个按钮的宽度，此时我会获取这个宽度此时红色字段被复制后的宽度为146px,但我获取到的宽度还是之前的“点我”这个字段的宽度，这种情况在实际项目中非常的常见，比如通过axios.get(url,data)从远端服务器获取json数据，赋值给vue中data的某个属性，我们此时需要获取到数据改变后的dom的高度，以便进">
+<meta name="twitter:image" content="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/C34880C9-9D14-4892-8D04-5B2F378D1B45.png">
+  
+    <link rel="alternate" href="/atom.xml" title="西南凯亚UX技术团队" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">西南凯亚UX技术团队</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://localhost:4000"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-vue源码探析之-从nextTick谈JS事件队列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/" class="article-date">
+  <time datetime="2019-05-15T08:18:40.000Z" itemprop="datePublished">2019-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue源码探析之-从nextTick谈JS事件队列
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="1、例子"><a href="#1、例子" class="headerlink" title="1、例子"></a>1、例子</h4><p><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/C34880C9-9D14-4892-8D04-5B2F378D1B45.png" alt="b39f80f93ee33f0b21f60097810d8617"><br>当鼠标点击点我这个按钮后，会赋值一个新的字符串给“点我”这个字段，从而改变这个按钮的宽度，此时我会获取这个宽度<br><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/52CE0A54-104E-4393-8E56-59BE635C9F46.png" alt="3e256cb4f34388a523e48c154b9bcef0"><br>此时红色字段被复制后的宽度为146px,但我获取到的宽度还是之前的“点我”这个字段的宽度，这种情况在实际项目中非常的常见，比如通过axios.get(url,data)从远端服务器获取json数据，赋值给vue中data的某个属性，我们此时需要获取到数据改变后的dom的高度，以便进行相关计算，此时我们希望获取到vue在监听到data改变触发重新渲染虚拟DOM后得到的实际高度，但你会发现获取到的dom依然是数据没更新之前的高度，因为此时dom还没有更新。<br>demo函数如下<br><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/363CF6B8-DBCB-4C56-97B3-B49EE55F35B6.png" alt="79e1d45e5a7f83b789a9724f7293cdf8"><br>可以看到数据更新后，在nextTick中才获取到了Dom更新后的高度。<br>更改数据后，马上获取dom，会发现dom依然是以前那个数据变化前的dom，说明dom的更新是异步的,下面介绍为啥vue会使用异步更新队列的方式，因为他会等一个组件内的所有状态更新完毕后最后执行组件的watcher，通知视图更新，所以你并不能马上获得更新后的dom。</p>
+<h4 id="2、为什么vue使用异步更新队列"><a href="#2、为什么vue使用异步更新队列" class="headerlink" title="2、为什么vue使用异步更新队列"></a>2、为什么vue使用异步更新队列</h4><p>Vue在2.0以后实现了中等粒度的数据变化侦测，变化侦测的通知只发送到组件级别，组件内部用到的所有状态变化都会通知到同一个watcher中，然后虚拟Dom会对整个组件进行diff对比有策略的更改Dom，也就是说如果在同一个事件循环中有两个数据发生了变化，那么组件的watcher会收到两份通知，从而进行两次的渲染，事实上并没有进行两次，而是等所有状态都修改完毕后，一次性将整个组件的Dom渲染到最新即可。<strong>这种在缓冲时去除重复数据对于避免不必要的计算和DOM操作非常重要。</strong><br>vue把收到通知的watcher缓存到一个队列里面，在添加到队列之前，对比是否有相同的watcher，如果不同就会将watcher push到队列里面，然后在下次的事件循环中，遍历执行watcher中的update，触发渲染流程并清空队列。</p>
+<h4 id="3、nextTick的触发时机"><a href="#3、nextTick的触发时机" class="headerlink" title="3、nextTick的触发时机"></a>3、nextTick的触发时机</h4><p>当数据发生改变触发watcher的派发更新操作，watcher的update会执行queuewatcher(this)，把当前watcher push到queue队列中，然后执行nextTick(flushSchedulerQueue)<br><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/4B23FD26-E4AA-468E-AF39-DBF1D2884312.png" alt="19bd724cf221a685d1aeb8b43c2086f0"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (!pending) &#123;</span><br><span class="line">  pending = true;</span><br><span class="line">  timerFunc();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这句的意思是如果不是本轮事件循环中第一次调用nextTick,也就是说，此时任务队列中已经被添加了一个执行回调列表的任务，那么我们不需要再执行timerFunc()向微任务事件队列中添加重复的任务。timerFunc方法会把flushCallbacks推送到微任务事件队列中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if (typeof Promise !== &apos;undefined&apos; &amp;&amp; isNative(Promise)) &#123;</span><br><span class="line">        var p = Promise.resolve();</span><br><span class="line">        timerFunc = function () &#123;</span><br><span class="line">            p.then(flushCallbacks);</span><br><span class="line">            if (isIOS) &#123; setTimeout(noop); &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        isUsingMicroTask = true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>flushCallbacks的作用就是for循环遍历执行callbacks数组里面的函数。<br>前面执行了nextTick(flushSchedulerQueue)此时callbacks数组里面，就会有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[function()&#123;flushSchedulerQueue.call(ctx)&#125;]</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/42F66E37-AB42-45E7-AFDE-D78FFDCAF5CB.png" alt="096516d4450f52503846e05082fd85c4"><br>这个flushSchedulerQueue的作用是：刷新队列并运行观察者，通知视图更新，需要注意的是，这个函数会先对queue中的watcher根据watcher的ID进行排序，原因有三：</p>
+<p>1、组件从父组件更新到子组件。(因为父组件总是这样创建于子组件之前)<br>2、组件的user watcher在其 render watcher之前运行(因为user watcher是在 render watcher之前创建的)<br>3、如果一个组件在父组件的视图更新期间被销毁，可以跳过它的观察者。</p>
+<p>此时如果紧接着手动调用this.$nextTick(function(){}),就会在callbacks数组队列中push入该回调函数cb。那什么时候执行微任务队列中的flushCallbacks呢？我们知道，当执行栈中的所有任务都执行完毕后，会检查微任务队列是否有事件存在，如果存在（flushCallbacks）会依次执行微任务队列中事件对应的回调，直到清空微任务队列。<br>因此nextTick的回调在“下次Dom更新周期”执行是指在下次执行栈中所有同步任务都执行完毕，检查微任务队列的事件并执行的时候更新Dom。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://localhost:4000/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/" data-id="cjw8jcfcn0001splsn2v2xxur" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/29/5月24号UX分享-前端篇/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          UX分享之-组件设计原则
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/14/vue源码探析之-computed计算属性/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">vue源码探析之-computed计算属性</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/05/29/5月24号UX分享-前端篇/">UX分享之-组件设计原则</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/15/vue源码探析之-从nextTick谈JS事件队列/">vue源码探析之-从nextTick谈JS事件队列</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/14/vue源码探析之-computed计算属性/">vue源码探析之-computed计算属性</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/13/Hexo图片部署和展示问题/">Hexo图片部署和展示问题</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/10/Vue源码探析之-Vue如何做到依赖收集与派发更新/">Vue源码探析之-Vue如何做到依赖收集与派发更新</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Object<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
